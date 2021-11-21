@@ -1,112 +1,133 @@
 <template>
-    <div>
-        <div class="content-body">
-				<!-- row -->
-				<div class="container-fluid">
-					<div class="row">			
-						<div class="col-xl-12 col-lg-12 col-xxl-12 col-md-12">
-							<div class="card profile-tab">
-								<div class="card-header">
-                                    <span><router-link to="/admin/create-user" class="btn btn-primary">Add User</router-link></span>
-									<input class="form-control" type="search" placeholder="Search" aria-label="Search">
-								</div>
-								<div class="card-body custom-tab-1">
-									<div class="tab-content">
-										<div id="my-posts" class="tab-pane fade active show">
-											<div class="table-responsive">
-												<table class="table table-responsive-md">
-													<thead>
-														<tr>
-                                                        <th>User Name</th>
-                                                        <th>Role Name</th>
-                                                        <th>Action</th>
-                                                        </tr>
-													</thead>
-													<tbody>
-														<tr v-for="user in users" :key="user._id">
-                                                        <td> {{ user.username }}</td>
-                                                        <th> {{ user.email}}</th>
-                                                        <td>
-                                                            <router-link :to="{ name: 'edit-user', params: {id: user._id}}" class="btn btn-sm btn-primary"><font color="white">Edit</font></router-link>
-                                                            <a @click="deleteUser(user.id)" class="btn btn-sm btn-danger"><font color="white">Delete</font></a>
-                                                        </td>
-                                                         </tr>
-													</tbody>
-												</table>
+    <div class="content-body">
+        <div class="container-fluid">
+                <div class="row page-titles mx-0">
+                    <div class="col-sm-6 p-md-0">
+                        <div class="welcome-text">
+                            <h4>Add Product</h4>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="breadcrumb-item active"><a href="javascript:void(0);">Products</a></li>
+                            <li class="breadcrumb-item active"><a href="javascript:void(0);">Add Product</a></li>
+                        </ol>
+                    </div>
+                </div>
+				
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="card">
+							<div class="card-header">
+								<h4 class="card-title">Courses Details</h4>
+							</div>
+							<div class="card-body">
+								<form action="#" method="post">
+									<div class="row">
+										<div class="col-lg-6 col-md-6 col-sm-12">
+											<div class="form-group">
+												<label class="form-label">Course Name</label>
+												<input type="text" class="form-control">
 											</div>
 										</div>
+										<div class="col-lg-6 col-md-6 col-sm-12">
+											<div class="form-group">
+												<label class="form-label">Course Code</label>
+												<input type="text" class="form-control">
+											</div>
+										</div>
+										<div class="col-lg-12 col-md-12 col-sm-12">
+											<div class="form-group">
+												<label class="form-label">Course Details</label>
+												<textarea class="form-control" rows="5"></textarea>
+											</div>
+										</div>
+										<div class="col-lg-6 col-md-6 col-sm-12">
+											<div class="form-group">
+												<label class="form-label">Start Form</label>
+												<input name="datepicker" class="datepicker-default form-control" id="datepicker">
+											</div>
+										</div>
+										<div class="col-lg-6 col-md-6 col-sm-12">
+											<div class="form-group">
+												<label class="form-label">Course Duration</label>
+												<input type="text" class="form-control">
+											</div>
+										</div>
+										<div class="col-lg-6 col-md-6 col-sm-12">
+											<div class="form-group">
+												<label class="form-label">Course Price</label>
+												<input type="text" class="form-control">
+											</div>
+										</div>
+										<div class="col-lg-6 col-md-6 col-sm-12">
+											<div class="form-group">
+												<label class="form-label">Professor Name</label>
+												<input type="text" class="form-control">
+											</div>
+										</div>
+										<div class="col-lg-6 col-md-6 col-sm-12">
+											<div class="form-group">
+												<label class="form-label">Maximum Students</label>
+												<input type="text" class="form-control">
+											</div>
+										</div>
+										<div class="col-lg-6 col-md-6 col-sm-12">
+											<div class="form-group">
+												<label class="form-label">Contact Number</label>
+												<input type="text" class="form-control">
+											</div>
+										</div>
+										<div class="col-lg-12 col-md-12 col-sm-12">
+											<div class="form-group fallback w-100">
+												<label class="form-label d-block">Course Photo</label>
+												<input type="file" class="dropify" data-default-file="">
+											</div>
+										</div>
+										<div class="col-lg-12 col-md-12 col-sm-12">
+											<button type="submit" class="btn btn-primary">Submit</button>
+											<button type="submit" class="btn btn-light">Cencel</button>
+										</div>
 									</div>
-								</div>
+								</form>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+        </div>
     </div>
 </template>
-
 <script type="text/javascript">
 import axios from 'axios';
 export default {
+    name : "create-product",
     created() {
         if (!User.loggedIn()) {
             this.$router.push({ name: '/admin/login' })
         }
-        this.allUser();
+        this.allProduct();
     },
     computed:{
-        // filtersearch(){
-        //     return this.users.filter(user => {
-        //         return user.name.match(this.searchTerm);
-        //     })
-        // }
+        filtersearch(){
+            return this.products.filter(product => {
+                return product.productName.match(this.searchTerm);
+            })
+        }
     },
     data() {
         return {
-            users: [],
+            products: [],
             searchTerm: ''
         }
     },
     methods: {
-        allUser(){
-            axios.get('https://elnic.herokuapp.com/api/getUser')
-                .then( ({data}) => {(this.users = data.data);})
+        allProduct(){
+            axios.get('https://elnic-api.herokuapp.com/api/product')
+                .then( ({data}) => {(this.products = data);})
                 .catch()
-        },
-        deleteUser(id){
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    axios.delete('/api/user/'+id)
-                        .then( () => {
-                            this.users = this.users.filter(user => {
-                                return user.id != id ;
-                            })
-                        })
-                        .catch( () => {
-                            this.$router.push({ name: 'category' })
-                        })
-                    Swal.fire(
-                        'Deleted!',
-                        'Your file has been deleted.',
-                        'success'
-                    )
-                }
-            })
-
         }
     }
 
 }
 </script>
-
-<style scoped>
-
-</style>

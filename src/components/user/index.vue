@@ -14,11 +14,11 @@
 									<div class="tab-content">
 										<div id="my-posts" class="tab-pane fade active show">
 											<div class="table-responsive">
-												<table class="table table-responsive-md">
+												<table class="table table-responsive-md"> 
 													<thead>
 														<tr>
                                                         <th>User Name</th>
-                                                        <th>Role Name</th>
+                                                        <th>Email</th>
                                                         <th>Action</th>
                                                         </tr>
 													</thead>
@@ -28,7 +28,7 @@
                                                         <th> {{ user.email}}</th>
                                                         <td>
                                                             <router-link :to="{ name: 'edit-user', params: {id: user._id}}" class="btn btn-sm btn-primary"><font color="white">Edit</font></router-link>
-                                                            <a @click="deleteUser(user.id)" class="btn btn-sm btn-danger"><font color="white">Delete</font></a>
+                                                            <a @click="deleteUser(user._id)" class="btn btn-sm btn-danger"><font color="white">Delete</font></a>
                                                         </td>
                                                          </tr>
 													</tbody>
@@ -69,8 +69,8 @@ export default {
     },
     methods: {
         allUser(){
-            axios.get('https://elnic.herokuapp.com/api/getUser')
-                .then( ({data}) => {(this.users = data.data);})
+            axios.get('https://elnic.herokuapp.com/api/user')
+                .then( ({data}) => {(this.users = data);})
                 .catch()
         },
         deleteUser(id){

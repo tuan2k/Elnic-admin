@@ -6,8 +6,13 @@ import Layout from '../components/layout'
 
 // User
 import User from '../components/user/index'
-import createuser from '../components/user/create'
-import edituser from '../components/user/edit'
+import createUser from '../components/user/create'
+import editUser from '../components/user/edit'
+
+// Category
+import Category from '../components/category/index'
+import createCat from '../components/category/create'
+import editCat from '../components/category/edit'
 
 // Product
 import Product from '../components/product/index'
@@ -40,12 +45,27 @@ export default new Router({
           {
             path: 'edit-user/:id',
             name: 'edit-user',
-            component: edituser,
+            component: editUser,
           },
           {
             path: 'create-user',
             name: 'create-user',
-            component: createuser,
+            component: createUser,
+          },
+          {
+            path: 'category',
+            name: 'category',
+            component: Category,
+          },
+          {
+            path: 'edit-category/:id',
+            name: 'edit-category',
+            component: editCat,
+          },
+          {
+            path: 'create-category',
+            name: 'create-category',
+            component: createCat,
           },
           {
             path: 'product',

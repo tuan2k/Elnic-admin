@@ -14,6 +14,11 @@
 							<span>User</span>
 						</router-link>
                     </li>
+                    <li><router-link  href="javascript:void()" aria-expanded="false" to="/admin/category">
+							<i class="la la-user"></i>
+							<span>Category</span>
+						</router-link>
+                    </li>
                      <li><router-link  href="javascript:void()" aria-expanded="false" to="/admin/product">
 							<i class="la la-user"></i>
 							<span>Product</span>
