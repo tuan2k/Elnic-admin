@@ -14,36 +14,37 @@
 									<div class="tab-content">
 										<div id="my-posts" class="tab-pane fade active show">
 											<div class="table-responsive">
-												<table class="table table-responsive-md">
-													<thead>
-														<tr>
-                                                        <th>Product Name</th>
-                                                        <th>Product Image</th>
-                                                        <th>Product Category</th>
-                                                        <th>Product Price</th>
-                                                        <th>Product Quantity</th>
-                                                        <th>Action</th>
-                                                        </tr>
-													</thead>
-													<tbody>
-														<tr v-for="product in filtersearch" :key="product._id">
-                                                        <td> {{ product.productName }}</td>
-                                                        <th><img :src="product.productImgs[0]" alt="product image" style="width:40;height:40px;" /></th>
-                                                        <th> {{ product.categoriesId}} </th>
-                                                        <th> {{ product.sellingPrice}} </th>
-                                                        <th> {{ product.productQty}} </th>
-                                                        <td>
-                                                            <router-link :to="{ name: 'view-product', params: {id:product._id}}" class="btn btn-sm btn-primary">View</router-link>
-                                                            <router-link :to="{ name: 'edit-product', params: {id: product._id}}" class="btn btn-sm btn-primary"><font color="white">Edit</font></router-link>
-                                                            <a @click="deleteUser(product._id)" class="btn btn-sm btn-danger"><font color="white">Delete</font></a>
-                                                        </td>
-                                                         </tr>
-													</tbody>
-												</table>
+												<b-table class="table table-responsive-md table-bordered"
+                                                    :items="filtersearch"
+                                                    :per-page="perPage"
+                                                    :fields="fields"
+                                                    :current-page="currentPage"
+                                                    small> 
+                                                    >
+                                                    <template #cell(image)="img">
+                                                        <img :src="img.item.productThambnail" alt="Image of Product" class="image_heo"/>
+                                                    </template> 
+                                                    <template #cell(actions)="row">
+                                                        <router-link :to="{ name: 'view-product', params: {id:row.item._id}}" class="btn btn-sm btn-primary">View</router-link>
+                                                        <router-link :to="{ name: 'edit-product', params: {id: row.item._id}}" class="btn btn-sm btn-primary"><font color="white">Edit</font></router-link>
+                                                        <a @click="deleteUser(row.item._id)" class="btn btn-sm btn-danger"><font color="white">Delete</font></a>
+                                                    </template>         
+												</b-table>
 											</div>
 										</div>
 									</div>
 								</div>
+                                <div class="overflow-auto">
+                                    <b-pagination
+                                    v-model="currentPage"
+                                    :total-rows="rows"
+                                    :per-page="perPage"
+                                    first-text="First"
+                                    prev-text="Prev"
+                                    next-text="Next"
+                                    last-text="Last"
+                                    ></b-pagination>
+                                </div>
 							</div>
 						</div>
 					</div>
@@ -71,13 +72,24 @@ export default {
     data() {
         return {
             products: [],
-            searchTerm: ''
+            searchTerm: '',
+            rows: 0,
+            perPage: 5,
+            currentPage: 1,
+            fields: [
+                { key: 'image', label: 'Image' },
+                'productName',
+                'productCode',
+                'sellingPrice',
+                'productQty',
+                { key: 'actions', label: 'Actions' },
+            ],
         }
     },
     methods: {
         allProduct(){
             axios.get('https://elnic-api.herokuapp.com/api/product')
-                .then( ({data}) => {(this.products = data);})
+                .then( ({data}) => {(this.products = data); this.rows = this.products.length})
                 .catch()
         },
         deleteUser(id){
@@ -115,5 +127,8 @@ export default {
 </script>
 
 <style scoped>
-
+.image_heo {
+    width: 70px;
+    height: 100px;
+}
 </style>

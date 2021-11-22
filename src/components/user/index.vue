@@ -14,29 +14,31 @@
 									<div class="tab-content">
 										<div id="my-posts" class="tab-pane fade active show">
 											<div class="table-responsive">
-												<table class="table table-responsive-md"> 
-													<thead>
-														<tr>
-                                                        <th>User Name</th>
-                                                        <th>Email</th>
-                                                        <th>Action</th>
-                                                        </tr>
-													</thead>
-													<tbody>
-														<tr v-for="user in filtersearch" :key="user._id">
-                                                        <td> {{ user.username }}</td>
-                                                        <th> {{ user.email}}</th>
-                                                        <td>
-                                                            <router-link :to="{ name: 'edit-user', params: {id: user._id}}" class="btn btn-sm btn-primary"><font color="white">Edit</font></router-link>
-                                                            <a @click="deleteUser(user._id)" class="btn btn-sm btn-danger"><font color="white">Delete</font></a>
-                                                        </td>
-                                                         </tr>
-													</tbody>
-												</table>
+												<b-table class="table table-responsive-md" :items="filtersearch"
+                                                        :per-page="perPage"
+                                                        :fields="fields"
+                                                        :current-page="currentPage"
+                                                        small> 
+                                                        <template #cell(actions)="row">
+                                                        <router-link :to="{ name: 'edit-user', params: {id: row.item._id}}" class="btn btn-sm btn-primary"><font color="white">Edit</font></router-link>
+                                                        <a @click="deleteUser(row.item._id)" class="btn btn-sm btn-danger"><font color="white">Delete</font></a>
+                                                        </template>
+												</b-table>
 											</div>
 										</div>
 									</div>
 								</div>
+                                <div class="overflow-auto">
+                                    <b-pagination
+                                    v-model="currentPage"
+                                    :total-rows="rows"
+                                    :per-page="perPage"
+                                    first-text="First"
+                                    prev-text="Prev"
+                                    next-text="Next"
+                                    last-text="Last"
+                                    ></b-pagination>
+                                </div>
 							</div>
 						</div>
 					</div>
@@ -64,13 +66,21 @@ export default {
     data() {
         return {
             users: [],
-            searchTerm: ''
+            searchTerm: '',
+            rows: 0,
+            perPage: 3,
+            currentPage: 1,
+            fields: [
+                'username',
+                'email',
+                { key: 'actions', label: 'Actions' }
+            ],
         }
     },
     methods: {
         allUser(){
             axios.get('https://elnic.herokuapp.com/api/user')
-                .then( ({data}) => {(this.users = data);})
+                .then( ({data}) => {(this.users = data);this.rows = this.users.length})
                 .catch()
         },
         deleteUser(id){
