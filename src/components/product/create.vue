@@ -7,13 +7,6 @@
             <h4>Add Product</h4>
           </div>
         </div>
-        <!-- <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                            <li class="breadcrumb-item active"><a href="javascript:void(0);">Products</a></li>
-                            <li class="breadcrumb-item active"><a href="javascript:void(0);">Add Product</a></li>
-                        </ol>
-                    </div> -->
       </div>
 
       <div class="row">
@@ -23,7 +16,7 @@
               <h4 class="card-title">Product Details</h4>
             </div>
             <div class="card-body">
-              <b-form action="#" method="post">
+              <b-form method="post" @submit.prevent="onSubmit">
                 <div class="row">
                   <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="form-group">
@@ -159,7 +152,22 @@
                       <label class="form-label d-block"
                         >Product Photo Thumbnail
                       </label>
-                      <input type="file" class="dropify" data-default-file="" />
+                      <input
+                        type="file"
+                        class="dropify"
+                        @change="onUploadThumbnail"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="form-group fallback w-100">
+                      <label class="form-label d-block">Product Images </label>
+                      <input
+                        type="file"
+                        class="dropify"
+                        multiple
+                        @change="onUploadImages"
+                      />
                     </div>
                   </div>
                   <div class="col-lg-12 col-md-12 col-sm-12">
@@ -167,7 +175,13 @@
                       Submit
                     </button>
                     <b-button type="reset" variant="danger">Reset</b-button>
-                    <button type="submit" class="btn btn-light">Cancel</button>
+                    <button
+                      type="button"
+                      class="btn btn-light"
+                      @click="onCancel"
+                    >
+                      Cancel
+                    </button>
                   </div>
                 </div>
               </b-form>
@@ -186,17 +200,18 @@ export default {
     if (!User.loggedIn()) {
       this.$router.push({ name: "login" });
     }
-    this.allProduct();
+    // this.allProduct();
   },
   computed: {
-    filtersearch() {
-      return this.products.filter(product => {
-        return product.productName.match(this.searchTerm);
-      });
-    },
+    // filtersearch() {
+    //   return this.products.filter(product => {
+    //     return product.productName.match(this.searchTerm);
+    //   });
+    // },
     nameCategories() {
-      const categories = this.$store.state.categories;
-      return categories.map(obj => obj.name);
+      //   const categories = this.$store.state.categories;
+      //   return categories.map(obj => obj.name);
+      return [1, 2, 3, 4];
     }
   },
   data() {
@@ -213,13 +228,41 @@ export default {
         status: false,
         categoriesId: "",
         productThambnail: "",
-        productImgs: ""
+        productImgs: []
       }
       //   products: [],
       //   searchTerm: ""
     };
   },
   methods: {
+    onUploadImages(event) {
+      this.productImgs = event.target.files;
+    },
+    onUploadThumbnail(event) {
+      this.productThambnail = event.target.files;
+    },
+    onSubmit() {
+      axios
+        .post("https://elnic-api.herokuapp.com/api/product", this.form, {})
+        .catch(er =>
+          Toast.fire({
+            icon: "error",
+            title: "Something's wrong"
+          })
+        )
+        .then(res => {
+          Toast.fire({
+            icon: "success",
+            title: "Add product successfully"
+          });
+        });
+      setTimeout(function() {
+        this.$router.push({ name: "product" });
+      }, 1000);
+    },
+    onCancel() {
+      this.$router.push({ name: "product" });
+    }
     // async allProduct() {
     //   await axios
     //     .get("https://elnic-api.herokuapp.com/api/product")
