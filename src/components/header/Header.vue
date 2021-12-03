@@ -1,26 +1,14 @@
 <template>
   <div>
     <div class="nav-header">
-      <a href="index.html" class="brand-logo">
-        <img class="logo-abbr" src="/static/images/logo-white.png" alt="" />
+      <a href="" class="brand-logo">
         <img
-          class="logo-compact"
-          src="/static/images/logo-text-white.png"
+          class="logo-abbr"
+          src="../../../static/images/shopping-bag.svg"
           alt=""
         />
-        <img
-          class="brand-title"
-          src="/static/images/logo-text-white.png"
-          alt=""
-        />
+        <h2 class="ml-2 mb-0">ELINIC</h2>
       </a>
-
-      <div class="nav-control">
-        <div class="hamburger">
-          <span class="line"></span><span class="line"></span
-          ><span class="line"></span>
-        </div>
-      </div>
     </div>
 
     <div class="header">
@@ -136,14 +124,13 @@
                   role="button"
                   data-toggle="dropdown"
                 >
-                  <img
-                    src="/static/images/profile/pic1.jpg"
-                    width="20"
-                    alt=""
-                  />
+                  <div class="hamburger">
+                    <span class="line"></span><span class="line"></span
+                    ><span class="line"></span>
+                  </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
-                  <a href="app-profile.html" class="dropdown-item ai-icon">
+                  <a href="" class="dropdown-item ai-icon" @click="onProfile">
                     <svg
                       id="icon-user1"
                       xmlns="http://www.w3.org/2000/svg"
@@ -203,7 +190,7 @@
                       <polyline points="16 17 21 12 16 7"></polyline>
                       <line x1="21" y1="12" x2="9" y2="12"></line>
                     </svg>
-                    <span class="ml-2">Logout </span>
+                    <span class="ml-2">Logout</span>
                   </a>
                 </div>
               </li>
@@ -220,6 +207,9 @@ export default {
   methods: {
     onLogout() {
       this.$router.push({ name: "login" });
+    },
+    onProfile() {
+      this.$router.push({ name: "profile" });
     }
   }
 };

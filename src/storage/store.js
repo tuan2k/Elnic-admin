@@ -14,17 +14,17 @@ export const store = new Vuex.Store({
     getCategories() {
       axios
         .get("https://elnic-api.herokuapp.com/api/categories")
-        .catch(error => Notification.error())
-        .then(({ data }) => {
-          this.state.products = data;
-        });
-    },
-    getProducts() {
-      axios
-        .get("https://elnic-api.herokuapp.com/api/product")
-        .catch(error => Notification.error())
+        .catch(() => Notification.error())
         .then(({ data }) => {
           this.state.categories = data;
+        });
+    },
+    async getProducts() {
+      await axios
+        .get("https://elnic-api.herokuapp.com/api/product")
+        .catch(() => Notification.error())
+        .then(({ data }) => {
+          this.state.products = data;
         });
     }
   }

@@ -14,8 +14,8 @@
                     style="width: 130px"
                   >
                     Add Product
-                  </router-link></span
-                >
+                  </router-link>
+                </span>
                 <input
                   v-model="searchTerm"
                   class="form-control ml-4"
@@ -47,14 +47,14 @@
                           />
                         </template>
                         <template #cell(actions)="row">
-                          <router-link
+                          <!-- <router-link
                             :to="{
                               name: 'view-product',
                               params: { id: row.item._id }
                             }"
                             class="btn btn-sm btn-primary"
                             >View</router-link
-                          >
+                          > -->
                           <router-link
                             :to="{
                               name: 'edit-product',
@@ -64,7 +64,7 @@
                             ><font color="white">Edit</font></router-link
                           >
                           <a
-                            @click="deleteUser(row.item._id)"
+                            @click="deleteProduct(row.item._id)"
                             class="btn btn-sm btn-danger"
                             ><font color="white">Delete</font></a
                           >
@@ -101,6 +101,8 @@ export default {
       this.$router.push({ name: "/admin/login" });
     }
     this.allProduct();
+    this.$store.dispatch("getCategories");
+    this.$store.dispatch("getProducts");
   },
   computed: {
     filtersearch() {
@@ -136,7 +138,7 @@ export default {
         })
         .catch();
     },
-    deleteUser(id) {
+    deleteProduct(id) {
       Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -148,16 +150,20 @@ export default {
       }).then(result => {
         if (result.isConfirmed) {
           axios
-            .delete("/api/user/" + id)
+            .delete("https://elnic-api.herokuapp.com/api/product/" + id)
             .then(() => {
-              this.users = this.users.filter(user => {
-                return user.id != id;
+              this.products = this.products.filter(product => {
+                return product._id != id;
               });
+              Swal.fire("Deleted!", "Your file has been deleted.", "success");
             })
             .catch(() => {
-              this.$router.push({ name: "category" });
+              Toast.fire({
+                icon: "warning",
+                title:
+                  "Something make us can not delete product, pls contact Viet Trung"
+              });
             });
-          Swal.fire("Deleted!", "Your file has been deleted.", "success");
         }
       });
     }

@@ -16,22 +16,24 @@ import editCat from "../components/category/edit";
 
 // Product
 import Product from "../components/product/index";
-import createproduct from "../components/product/create";
-import editproduct from "../components/product/edit";
-import viewproduct from "../components/product/create";
+import createproduct from "@/components/product/create";
+import editproduct from "@/components/product/edit";
+import viewproduct from "@/components/product/create";
 
+// Profile
+import Profile from "@/components/profile/index";
 Vue.use(Router);
 
 export default new Router({
   mode: "history",
   routes: [
     {
-      path: "/admin",
+      path: "/",
       name: "layout",
       component: Layout,
       children: [
         {
-          path: "home",
+          path: "/",
           name: "home",
           component: Home
         },
@@ -84,6 +86,11 @@ export default new Router({
           path: "create-product",
           name: "create-product",
           component: createproduct
+        },
+        {
+          path: "profile",
+          name: "profile",
+          component: Profile
         }
       ]
     },

@@ -474,8 +474,10 @@ export default {
     if (!User.loggedIn()) {
       this.$router.push({ name: "login" });
     }
-    // this.$store.actions.getCategories();
-    // this.$store.actions.getProducts();
+    this.$store.dispatch("getCategories");
+    this.$store.dispatch("getProducts");
+    // console.log(this.$store.state.categories);
+    // console.log(this.$store.state.products);
   }
 };
 </script>

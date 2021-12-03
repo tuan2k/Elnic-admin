@@ -35,8 +35,9 @@
                       <b-form-select
                         type="text"
                         class="form-control"
-                        v-model="form.categoriesId"
+                        v-model="nameCategory"
                         :options="nameCategories"
+                        @change="getCateId"
                         required
                       />
                     </div>
@@ -61,10 +62,11 @@
                         class="form-control"
                         rows="2"
                         v-model="form.shortDescp"
+                        required
                       ></textarea>
                     </div>
                   </div>
-                  <div class="col-lg-6 col-md-6 col-sm-12">
+                  <!-- <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="form-group">
                       <label class="form-label">Start Form</label>
                       <input
@@ -75,14 +77,14 @@
                         v-model="form.productName"
                       />
                     </div>
-                  </div>
+                  </div> -->
                   <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="form-group">
                       <label class="form-label">Quantity</label>
                       <input
-                        type="text"
+                        type="number"
                         class="form-control"
-                        v-model="form.productName"
+                        v-model="form.productQty"
                       />
                     </div>
                   </div>
@@ -90,9 +92,10 @@
                     <div class="form-group">
                       <label class="form-label">Product Price</label>
                       <input
-                        type="text"
+                        type="number"
                         class="form-control"
                         v-model="form.sellingPrice"
+                        required
                       />
                     </div>
                   </div>
@@ -100,24 +103,14 @@
                     <div class="form-group">
                       <label class="form-label">Discount Price</label>
                       <input
-                        type="text"
+                        type="number"
                         class="form-control"
                         v-model="form.discountPrice"
+                        required
                       />
                     </div>
                   </div>
-
-                  <div class="col-lg-6 col-md-6 col-sm-12">
-                    <div class="form-group">
-                      <label class="form-label">Status of Product</label>
-                      <input
-                        type="checkbox"
-                        class="form-control"
-                        v-model="form.productName"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-lg-6 col-md-6 col-sm-12">
+                  <!-- <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="form-group">
                       <label class="form-label">Hot Deal</label>
                       <input
@@ -126,18 +119,19 @@
                         v-model="form.hotDeal"
                       />
                     </div>
-                  </div>
+                  </div> -->
                   <div class="col-lg-6 col-md-6 col-sm-12">
-                    <div class="form-group">
-                      <label class="form-label">Feature</label>
-                      <input
-                        type="checkbox"
-                        class="form-control"
-                        v-model="form.featured"
-                      />
-                    </div>
+                    <b-form-checkbox v-model="form.featured">
+                      Feature
+                    </b-form-checkbox>
+                    <b-form-checkbox v-model="form.status">
+                      Status
+                    </b-form-checkbox>
+                    <b-form-checkbox v-model="form.hotDeal">
+                      Hot Deal
+                    </b-form-checkbox>
                   </div>
-                  <div class="col-lg-6 col-md-6 col-sm-12">
+                  <!-- <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="form-group">
                       <label class="form-label">Status</label>
                       <input
@@ -146,7 +140,7 @@
                         v-model="form.status"
                       />
                     </div>
-                  </div>
+                  </div> -->
                   <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="form-group fallback w-100">
                       <label class="form-label d-block"
@@ -155,7 +149,8 @@
                       <input
                         type="file"
                         class="dropify"
-                        @change="onUploadThumbnail"
+                        @change="onUploadThumbnail($event)"
+                        required
                       />
                     </div>
                   </div>
@@ -164,9 +159,10 @@
                       <label class="form-label d-block">Product Images </label>
                       <input
                         type="file"
+                        accept="image/*"
                         class="dropify"
                         multiple
-                        @change="onUploadImages"
+                        @change="onUploadImages($event)"
                       />
                     </div>
                   </div>
@@ -182,6 +178,11 @@
                     >
                       Cancel
                     </button>
+                    <b-spinner
+                      variant="success"
+                      label="Spinning"
+                      v-if="loading"
+                    ></b-spinner>
                   </div>
                 </div>
               </b-form>
@@ -200,18 +201,18 @@ export default {
     if (!User.loggedIn()) {
       this.$router.push({ name: "login" });
     }
+    this.$store.dispatch("getCategories");
+    // console.log(this.$store.state.categories);
     // this.allProduct();
   },
   computed: {
-    // filtersearch() {
-    //   return this.products.filter(product => {
-    //     return product.productName.match(this.searchTerm);
-    //   });
-    // },
+    categories() {
+      return this.$store.state.categories;
+    },
     nameCategories() {
-      //   const categories = this.$store.state.categories;
-      //   return categories.map(obj => obj.name);
-      return [1, 2, 3, 4];
+      const categories = this.$store.state.categories;
+      // console.log(categories);
+      return categories.map(obj => obj.categoryName);
     }
   },
   data() {
@@ -229,9 +230,9 @@ export default {
         categoriesId: "",
         productThambnail: "",
         productImgs: []
-      }
-      //   products: [],
-      //   searchTerm: ""
+      },
+      nameCategory: "",
+      loading: false
     };
   },
   methods: {
@@ -239,41 +240,62 @@ export default {
       this.productImgs = event.target.files;
     },
     onUploadThumbnail(event) {
-      this.productThambnail = event.target.files;
+      console.log(event.target.files[0]);
+      this.productThambnail = event.target.files[0];
     },
     onSubmit() {
+      let formData = new FormData();
+      formData.append("productName", this.form.productName);
+      formData.append("productQty", this.form.productName);
+      formData.append("discountPrice", this.form.discountPrice);
+      formData.append("sellingPrice", this.form.sellingPrice);
+      formData.append("shortDescp", this.form.shortDescp);
+      formData.append("longDescp", this.form.longDescp);
+      formData.append("hotDeal", this.form.hotDeal);
+      formData.append("featured", this.form.featured);
+      formData.append("status", this.form.status);
+      formData.append("categoriesId", this.form.categoriesId);
+      formData.append("productThambnail", this.form.productThambnail);
+      formData.append("productImgs", this.form.productImgs);
+
+      let config = {
+        header: {
+          "Content-Type": "multipart/form-data"
+        }
+      };
+      console.log("form: ", this.form);
+      console.log(formData);
+      for (var key of formData.entries()) {
+        console.log(key[0] + ", " + key[1]);
+      }
+      this.loading = true;
       axios
-        .post("https://elnic-api.herokuapp.com/api/product", this.form, {})
-        .catch(er =>
-          Toast.fire({
-            icon: "error",
-            title: "Something's wrong"
-          })
-        )
-        .then(res => {
+        .post("https://elnic-api.herokuapp.com/api/product", formData, config)
+        .then(() => {
           Toast.fire({
             icon: "success",
             title: "Add product successfully"
           });
+          this.loading = false;
+          setTimeout(this.$router.push({ name: "product" }), 1000);
+        })
+        .catch(() => {
+          Toast.fire({
+            icon: "warning",
+            title: "Something's wrong. Contact Mr.Thuận pls"
+          });
+          this.loading = false;
         });
-      setTimeout(function() {
-        this.$router.push({ name: "product" });
-      }, 1000);
     },
     onCancel() {
       this.$router.push({ name: "product" });
+    },
+    getCateId(value) {
+      this.form.categoriesId = this.categories.filter(
+        obj => obj.categoryName === value
+      )[0]._id;
+      console.log(this.form.categoriesId);
     }
-    // async allProduct() {
-    //   await axios
-    //     .get("https://elnic-api.herokuapp.com/api/product")
-    //     .catch(error => {
-    //       Notification.error();
-    //       console.log(error);
-    //     })
-    //     .then(({ data }) => {
-    //       this.products = data;
-    //     });
-    // }
   }
 };
 </script>
