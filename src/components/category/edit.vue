@@ -44,6 +44,18 @@
                       <button type="submit" class="btn btn-primary">
                         Submit
                       </button>
+                      <button
+                        type="button"
+                        class="btn btn-light"
+                        @click="onCancel"
+                      >
+                        Cancel
+                      </button>
+                      <b-spinner
+                        variant="success"
+                        label="Spinning"
+                        v-if="loading"
+                      ></b-spinner>
                     </div>
                   </div>
                 </form>
@@ -82,15 +94,18 @@ export default {
         categoryName: "",
         catgoryIcon: ""
       },
-      errors: {}
+      errors: {},
+      loading: false
     };
   },
   methods: {
     categoryUpdate() {
+      this.loading = true;
       let id = this.$route.params.id;
       axios
         .put("https://elnic-api.herokuapp.com/api/categories/" + id, this.form)
         .then(() => {
+          this.loading = false;
           this.$router.push({ name: "category" });
           Toast.fire({
             icon: "success",
@@ -98,6 +113,9 @@ export default {
           });
         })
         .catch(error => (this.errors = error.response.data.errors));
+    },
+    onCancel() {
+      this.$router.push({ name: "product" });
     }
   }
 };

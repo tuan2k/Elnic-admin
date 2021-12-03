@@ -195,20 +195,7 @@ export default {
     if (!User.loggedIn()) {
       this.$router.push({ name: "login" });
     }
-    let id = this.$route.params.id;
-    axios
-      .get("https://elnic-api.herokuapp.com/api/product/" + id)
-      .then(({ data }) => {
-        this.form = data[0];
-        console.log(data[0]);
-      })
-      .catch(error => {
-        console.log(error);
-        Toast.fire({
-          icon: "warning",
-          title: "Something's wrong with get this product. Contact Trung pls"
-        });
-      });
+
     // getProduct(id);
   },
   computed: {
@@ -221,6 +208,7 @@ export default {
       return categories.map(obj => obj.categoryName);
     }
   },
+
   data() {
     return {
       form: {
@@ -240,20 +228,56 @@ export default {
       nameCategory: ""
     };
   },
+  mounted() {
+    let id = this.$route.params.id;
+    axios
+      .get("https://elnic-api.herokuapp.com/api/product/" + id)
+      .then(({ data }) => {
+        this.form = data[0];
+        this.nameCategory = this.categories.filter(
+          obj => obj._id === this.form.categoriesId
+        )[0].categoryName;
+        // console.log(data[0]);
+      })
+      .catch(error => {
+        console.log(error);
+        Toast.fire({
+          icon: "warning",
+          title: "Something's wrong with get this product. Contact Trung pls"
+        });
+      });
+  },
   methods: {
     onUploadImages(event) {
       this.productImgs = event.target.files;
     },
     onUploadThumbnail(event) {
-      this.productThambnail = event.target.files;
+      console.log(event.target.files[0]);
+      this.form.productThambnail = event.target.files[0];
+      console.log(event.target.files[0]);
     },
     onSubmit() {
+      let id = this.$route.params.id;
+      let formData = new FormData();
+      formData.append("_id", id);
+      formData.append("productName", this.form.productName);
+      formData.append("productQty", this.form.productName);
+      formData.append("discountPrice", this.form.discountPrice);
+      formData.append("sellingPrice", this.form.sellingPrice);
+      formData.append("shortDescp", this.form.shortDescp);
+      formData.append("longDescp", this.form.longDescp);
+      formData.append("hotDeal", this.form.hotDeal);
+      formData.append("featured", this.form.featured);
+      formData.append("status", this.form.status);
+      formData.append("categoriesId", this.form.categoriesId);
+      formData.append("productThambnail", this.form.productThambnail);
+      formData.append("productImgs", this.form.productImgs);
       axios
-        .put("https://elnic-api.herokuapp.com/api/product" + id, this.form)
-        .then(() => {
+        .put("https://elnic-api.herokuapp.com/api/product", formData)
+        .then(({ response }) => {
           Toast.fire({
             icon: "success",
-            title: "Edit product successfully"
+            title: response.message
           });
           setTimeout(this.$router.push({ name: "product" }), 1000);
         })
@@ -273,7 +297,7 @@ export default {
       this.form.categoriesId = this.categories.filter(
         obj => obj.categoryName === value
       )[0]._id;
-      console.log(this.form.categoriesId);
+      // console.log(this.form.categoriesId);
     },
 
     async getProduct(id) {

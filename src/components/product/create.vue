@@ -237,11 +237,11 @@ export default {
   },
   methods: {
     onUploadImages(event) {
-      this.productImgs = event.target.files;
+      this.form.productImgs = event.target.files;
     },
     onUploadThumbnail(event) {
       console.log(event.target.files[0]);
-      this.productThambnail = event.target.files[0];
+      this.form.productThambnail = event.target.files[0];
     },
     onSubmit() {
       let formData = new FormData();
