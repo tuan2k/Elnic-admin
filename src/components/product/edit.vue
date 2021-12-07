@@ -150,7 +150,6 @@
                         type="file"
                         class="dropify"
                         @change="onUploadThumbnail"
-                        required
                       />
                     </div>
                   </div>
@@ -169,7 +168,7 @@
                     <button type="submit" class="btn btn-primary">
                       Submit
                     </button>
-                    <b-button type="reset" variant="danger">Reset</b-button>
+                    <!-- <b-button type="reset" variant="danger">Reset</b-button> -->
                     <button
                       type="button"
                       class="btn btn-light"
@@ -274,10 +273,10 @@ export default {
       formData.append("productImgs", this.form.productImgs);
       axios
         .put("https://elnic-api.herokuapp.com/api/product", formData)
-        .then(({ response }) => {
+        .then(({ responses }) => {
           Toast.fire({
             icon: "success",
-            title: response.message
+            title: responses.message
           });
           setTimeout(this.$router.push({ name: "product" }), 1000);
         })

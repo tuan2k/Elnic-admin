@@ -150,7 +150,6 @@
                         type="file"
                         class="dropify"
                         @change="onUploadThumbnail($event)"
-                        required
                       />
                     </div>
                   </div>

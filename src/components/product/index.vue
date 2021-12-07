@@ -30,7 +30,7 @@
                     <div class="table-responsive">
                       <b-table
                         class="table table-responsive-md table-bordered"
-                        :items="filtersearch"
+                        :items="products"
                         :per-page="perPage"
                         :fields="fields"
                         :current-page="currentPage"
@@ -101,15 +101,15 @@ export default {
       this.$router.push({ name: "/admin/login" });
     }
     this.allProduct();
-    this.$store.dispatch("getCategories");
+    // this.$store.dispatch("getCategories");
     this.$store.dispatch("getProducts");
   },
   computed: {
-    filtersearch() {
-      return this.products.filter(product => {
-        return product.productName.match(this.searchTerm);
-      });
-    }
+    // filtersearch() {
+    //   return this.products.filter(product => {
+    //     return product.productName.match(this.searchTerm);
+    //   });
+    // }
   },
   data() {
     return {
@@ -134,6 +134,7 @@ export default {
         .get("https://elnic-api.herokuapp.com/api/product")
         .then(({ data }) => {
           this.products = data;
+          this.$store.state.products = data;
           this.rows = this.products.length;
         })
         .catch();

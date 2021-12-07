@@ -9,7 +9,7 @@
                 <div class="row no-gutters">
                   <div class="col-xl-12">
                     <div class="auth-form">
-                      <h4 class="text-center mb-4">Sign in your account</h4>
+                      <h4 class="text-center mb-4">Sign in Admin ELNIC</h4>
                       <form @submit.prevent="login" class="user">
                         <div class="form-group">
                           <label><strong>Username</strong></label>
@@ -38,14 +38,12 @@
                               <label
                                 class="custom-control-label"
                                 for="basic_checkbox_1"
-                                >Remember my preference</label
+                                >Remember me</label
                               >
                             </div>
                           </div>
                           <div class="form-group">
-                            <a href="page-forgot-password.html"
-                              >Forgot Password?</a
-                            >
+                            <a href="">Forgot Password?</a>
                           </div>
                         </div>
                         <div class="text-center">
@@ -53,7 +51,7 @@
                             type="submit"
                             class="btn btn-primary btn-block"
                           >
-                            Sign me in
+                            Sign in
                           </button>
                         </div>
                       </form>
