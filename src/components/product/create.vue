@@ -230,6 +230,12 @@ export default {
         productThambnail: "",
         productImgs: []
       },
+       options:{
+                url: 'https://elnic-api.herokuapp.com/api/product',
+                type: "POST",
+                processData: false, 
+                contentType: false 
+      },
       nameCategory: "",
       loading: false
     };
@@ -245,7 +251,7 @@ export default {
     onSubmit() {
       let formData = new FormData();
       formData.append("productName", this.form.productName);
-      formData.append("productQty", this.form.productName);
+      formData.append("productQty", this.form.productQty);
       formData.append("discountPrice", this.form.discountPrice);
       formData.append("sellingPrice", this.form.sellingPrice);
       formData.append("shortDescp", this.form.shortDescp);
@@ -255,36 +261,23 @@ export default {
       formData.append("status", this.form.status);
       formData.append("categoriesId", this.form.categoriesId);
       formData.append("productThambnail", this.form.productThambnail);
-      formData.append("productImgs", this.form.productImgs);
-
-      let config = {
-        header: {
-          "Content-Type": "multipart/form-data"
-        }
-      };
-      console.log("form: ", this.form);
-      console.log(formData);
-      for (var key of formData.entries()) {
-        console.log(key[0] + ", " + key[1]);
+      for (let i=0;i<this.form.productImgs.length;i++){
+           formData.append("productImgs", this.form.productImgs[i]);
       }
-      this.loading = true;
-      axios
-        .post("https://elnic-api.herokuapp.com/api/product", formData, config)
-        .then(() => {
-          Toast.fire({
-            icon: "success",
-            title: "Add product successfully"
-          });
-          this.loading = false;
-          setTimeout(this.$router.push({ name: "product" }), 1000);
-        })
-        .catch(() => {
-          Toast.fire({
-            icon: "warning",
-            title: "Something's wrong. Contact Mr.Thuận pls"
-          });
-          this.loading = false;
-        });
+      $.ajax(Object.assign({}, this.options, {data: formData}))
+            .then( (res) => {
+                console.log(res);
+                this.loading= false;
+                this.$router.push({ name: "product"})
+                    Toast.fire({
+                    icon: 'success',
+                    title: 'Thêm sản phẩm thành công!!!'
+         	    });
+            })
+            .catch( (err) => {
+                console.log(err)
+            });
+     
     },
     onCancel() {
       this.$router.push({ name: "product" });
