@@ -87,21 +87,21 @@ export default {
   },
   methods: {
     login() {
-      console.log(this.form.username + this.form.password);
+      // console.log(this.form.username + this.form.password);
       axios
         .post("https://elnic.herokuapp.com/api/auth/signin", this.form)
         .then(res => {
           // console.log(res);
-          // User.responseAfterLogin(res);
-          // this.$swal({
-          //   title: "Signed in successfully",
-          //   icon: "success",
-          //   toast: true,
-          //   position: "top-end",
-          //   showConfirmButton: false,
-          //   timer: 2500,
-          //   timerProgressBar: true
-          // });
+          User.responseAfterLogin(res);
+          this.$swal({
+            title: "Signed in successfully",
+            icon: "success",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true
+          });
           this.$router.push({ name: "home" });
         })
         .catch(error => {
