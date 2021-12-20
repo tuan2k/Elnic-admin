@@ -76,37 +76,40 @@ import axios from "axios";
 export default {
   created() {
     if (!User.loggedIn()) {
-      this.$router.push({ name: "/admin/login" });
+      this.$router.push({ name: "login" });
     }
-    this.allUser();
   },
   computed: {
+    users: {
+      get() {
+        return this.$store.state.users;
+      }
+    },
+    rows: {
+      get() {
+        return this.users.length;
+      }
+    },
     filtersearch() {
       return this.users.filter(user => {
         return user.username.match(this.searchTerm);
       });
     }
   },
+  mounted() {
+    this.$store.dispatch("getUsers");
+  },
   data() {
     return {
-      users: [],
+      //   users: [],
       searchTerm: "",
-      rows: 0,
-      perPage: 3,
+      //   rows: 0,
+      perPage: 10,
       currentPage: 1,
       fields: ["username", "email", { key: "actions", label: "Actions" }]
     };
   },
   methods: {
-    allUser() {
-      axios
-        .get("https://elnic.herokuapp.com/api/user")
-        .then(({ data }) => {
-          this.users = data;
-          this.rows = this.users.length;
-        })
-        .catch();
-    },
     deleteUser(id) {
       this.$swal({
         title: "Are you sure?",

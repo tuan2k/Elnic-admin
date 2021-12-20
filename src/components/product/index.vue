@@ -98,24 +98,35 @@ import axios from "axios";
 export default {
   created() {
     if (!User.loggedIn()) {
-      this.$router.push({ name: "/admin/login" });
+      this.$router.push({ name: "login" });
     }
-    this.allProduct();
-    this.$store.dispatch("getCategories");
-    this.$store.dispatch("getProducts");
   },
   computed: {
     filtersearch() {
       return this.products.filter(product => {
         return product.productName.match(this.searchTerm);
       });
+    },
+    products: {
+      get() {
+        return this.$store.state.products;
+      }
+    },
+    rows: {
+      get() {
+        return this.products.length;
+      }
     }
+  },
+  mounted() {
+    this.$store.dispatch("getCategories");
+    this.$store.dispatch("getProducts");
   },
   data() {
     return {
-      products: [],
+      // products: [],
       searchTerm: "",
-      rows: 0,
+      // rows: 0,
       perPage: 5,
       currentPage: 1,
       fields: [
@@ -129,15 +140,6 @@ export default {
     };
   },
   methods: {
-    allProduct() {
-      axios
-        .get("https://elnic-api.herokuapp.com/api/product")
-        .then(({ data }) => {
-          this.products = data;
-          this.rows = this.products.length;
-        })
-        .catch();
-    },
     deleteProduct(id) {
       this.$swal
         .fire({
@@ -158,8 +160,7 @@ export default {
                   return product._id != id;
                 });
                 this.$swal({
-                  title: "Deleted!",
-                  text: "Your file has been deleted.",
+                  title: "Deleted successfully!",
                   icon: "success",
                   toast: true,
                   position: "top-end",

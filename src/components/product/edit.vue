@@ -230,17 +230,11 @@ export default {
   },
   mounted() {
     let id = this.$route.params.id;
+    // getProduct(id);
     axios
       .get("https://elnic-api.herokuapp.com/api/product/" + id)
-      .then(({ data }) => {
-        this.form = data[0];
-        this.nameCategory = this.categories.filter(
-          obj => obj._id === this.form.categoriesId
-        )[0].categoryName;
-        // console.log(data[0]);
-      })
       .catch(error => {
-        console.log(error);
+        // console.log(error);
         this.$swal({
           title: "Something's wrong with get this product. Contact Trung pls",
           icon: "success",
@@ -250,6 +244,16 @@ export default {
           timer: 2500,
           timerProgressBar: true
         });
+      })
+      .then(({ data }) => {
+        this.form = data[0];
+        // console.log(
+        //   this.categories.filter(obj => obj._id === this.form.categoriesId)[0]
+        // );
+        this.nameCategory = this.categories.filter(
+          obj => obj._id === this.form.categoriesId
+        )[0].categoryName;
+        // console.log(data[0]);
       });
   },
   methods: {
@@ -257,9 +261,9 @@ export default {
       this.productImgs = event.target.files;
     },
     onUploadThumbnail(event) {
-      console.log(event.target.files[0]);
+      // console.log(event.target.files[0]);
       this.form.productThambnail = event.target.files[0];
-      console.log(event.target.files[0]);
+      // console.log(event.target.files[0]);
     },
     onSubmit() {
       let id = this.$route.params.id;
@@ -315,15 +319,12 @@ export default {
       // console.log(this.form.categoriesId);
     },
 
-    async getProduct(id) {
-      await axios
+    getProduct(id) {
+      console.log("data[0]");
+      axios
         .get("https://elnic-api.herokuapp.com/api/product/" + id)
-        .then(({ data }) => {
-          this.form = data[0];
-          console.log(data[0]);
-        })
         .catch(error => {
-          console.log(error);
+          // console.log(error);
           this.$swal({
             title: "Something's wrong with get this product. Contact Trung pls",
             icon: "warning",
@@ -333,6 +334,13 @@ export default {
             timer: 2500,
             timerProgressBar: true
           });
+        })
+        .then(({ data }) => {
+          this.form = data[0];
+          this.nameCategory = this.categories.filter(
+            obj => obj._id === this.form.categoriesId
+          )[0].categoryName;
+          // console.log(data[0]);
         });
     }
   }
