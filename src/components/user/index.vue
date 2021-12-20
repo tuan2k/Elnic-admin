@@ -7,6 +7,11 @@
           <div class="col-xl-12 col-lg-12 col-xxl-12 col-md-12">
             <div class="card profile-tab">
               <div class="card-header">
+                <span
+                  ><router-link to="create-user" class="btn btn-primary"
+                    >Add User</router-link
+                  ></span
+                >
                 <input
                   v-model="searchTerm"
                   class="form-control"
@@ -21,13 +26,13 @@
                     <div class="table-responsive">
                       <b-table
                         class="table table-responsive-md"
-                        :items="userData"
+                        :items="filtersearch"
                         :per-page="perPage"
                         :fields="fields"
                         :current-page="currentPage"
                         small
                       >
-                        <!-- <template #cell(actions)="row">
+                        <template #cell(actions)="row">
                           <router-link
                             :to="{
                               name: 'edit-user',
@@ -41,7 +46,7 @@
                             class="btn btn-sm btn-danger"
                             ><font color="white">Delete</font></a
                           >
-                        </template> -->
+                        </template>
                       </b-table>
                     </div>
                   </div>
@@ -85,6 +90,11 @@ export default {
         return checkRole;
       });
       return dataUser;
+    },
+    filtersearch() {
+      return this.users.filter(user => {
+        return user.username.match(this.searchTerm);
+      });
     }
   },
   data() {
@@ -109,7 +119,7 @@ export default {
         .catch();
     },
     deleteUser(id) {
-      Swal.fire({
+      this.$swal({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
         icon: "warning",
@@ -125,11 +135,20 @@ export default {
               this.users = this.users.filter(user => {
                 return user.id != id;
               });
+              this.$swal({
+                title: "Deleted",
+                text: "Delete successfully!",
+                icon: "success",
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 2500,
+                timerProgressBar: true
+              });
             })
             .catch(() => {
               this.$router.push({ name: "category" });
             });
-          Swal.fire("Deleted!", "Your file has been deleted.", "success");
         }
       });
     }

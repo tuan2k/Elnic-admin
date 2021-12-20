@@ -68,6 +68,7 @@
 </template>
 <script>
 import axios from "axios";
+
 export default {
   name: "Login",
   created() {
@@ -90,20 +91,30 @@ export default {
       axios
         .post("https://elnic.herokuapp.com/api/auth/signin", this.form)
         .then(res => {
-          console.log(res);
-          User.responseAfterLogin(res);
-          Toast.fire({
+          // console.log(res);
+          // User.responseAfterLogin(res);
+          this.$swal({
+            title: "Signed in successfully",
             icon: "success",
-            title: "Signed in successfully"
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
           });
           this.$router.push({ name: "home" });
         })
         .catch(error => {
           this.errors = error.response;
           console.log(error);
-          Toast.fire({
-            icon: "warning",
-            title: "Invalid Email or Password"
+          this.$swal({
+            title: "Invalid Email or Password",
+            icon: "error",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
           });
         });
     }

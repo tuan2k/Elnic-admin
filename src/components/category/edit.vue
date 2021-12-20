@@ -107,9 +107,14 @@ export default {
         .then(() => {
           this.loading = false;
           this.$router.push({ name: "category" });
-          Toast.fire({
+          this.$swal({
+            title: "Update Category Successfully",
             icon: "success",
-            title: "Update Category Successfully"
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
           });
         })
         .catch(error => (this.errors = error.response.data.errors));

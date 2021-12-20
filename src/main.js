@@ -1,17 +1,24 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from "vue";
-import App from "./App";
-import router from "./router";
-import User from "./storage/User";
-import Notification from "./storage/Notification";
-import Swal from "sweetalert2";
-import { store } from "./storage/store";
-import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
-import Vuex from "vuex";
-// Import Bootstrap an BootstrapVue CSS files (order is important)
+
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
+
+import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
+
+import App from "./App";
+import Notification from "./storage/Notification";
+import Swal from "sweetalert2";
+import User from "./storage/User";
+import Vue from "vue";
+import VueSweetalert2 from 'vue-sweetalert2';
+import Vuex from "vuex";
+import router from "./router";
+import { store } from "./storage/store";
+
+// Import Bootstrap an BootstrapVue CSS files (order is important)
+
+
 Vue.use(Vuex);
 Vue.config.productionTip = false;
 
@@ -23,6 +30,7 @@ window.Swal = Swal;
 Vue.use(BootstrapVue);
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin);
+Vue.use(VueSweetalert2);
 
 const Toast = Swal.mixin({
   toast: true,
@@ -37,7 +45,6 @@ const Toast = Swal.mixin({
 });
 window.Toast = Toast;
 
-/* eslint-disable no-new */
 new Vue({
   el: "#app",
   router,

@@ -113,7 +113,7 @@ export default {
         .catch();
     },
     deleteCategory(id) {
-      Swal.fire({
+      this.$swal({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
         icon: "warning",
@@ -129,11 +129,21 @@ export default {
               this.categories = this.categories.filter(cat => {
                 return cat._id != id;
               });
+              this.$swal({
+                  title: "Deleted",
+                  text: "Delete successfully!",
+                  icon: "success",
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 2500,
+                  timerProgressBar: true
+                });
             })
             .catch(() => {
               this.$router.push({ name: "category" });
             });
-          Swal.fire("Deleted!", "Your file has been deleted.", "success");
+          // this.$swal("Deleted!", "Delete successfully", "success");
         }
       });
     }

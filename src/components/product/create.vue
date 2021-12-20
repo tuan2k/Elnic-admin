@@ -269,9 +269,14 @@ export default {
           console.log(res);
           this.loading = false;
           this.$router.push({ name: "product" });
-          Toast.fire({
+          this.$swal({
+            title: "Create product Successfully",
             icon: "success",
-            title: "Thêm sản phẩm thành công!!!"
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
           });
         })
         .catch(err => {

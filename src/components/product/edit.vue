@@ -240,9 +240,14 @@ export default {
       })
       .catch(error => {
         console.log(error);
-        Toast.fire({
-          icon: "warning",
-          title: "Something's wrong with get this product. Contact Trung pls"
+        this.$swal({
+          title: "Something's wrong with get this product. Contact Trung pls",
+          icon: "success",
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 2500,
+          timerProgressBar: true
         });
       });
   },
@@ -273,17 +278,27 @@ export default {
       formData.append("productImgs", this.form.productImgs);
       axios
         .put("https://elnic-api.herokuapp.com/api/product", formData)
-        .then(({ responses }) => {
-          Toast.fire({
+        .then(({ response }) => {
+          this.$swal({
+            title: response.message,
             icon: "success",
-            title: responses.message
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
           });
           setTimeout(this.$router.push({ name: "product" }), 1000);
         })
         .catch(() =>
-          Toast.fire({
+          this.$swal({
+            title: "Something's wrong. Contact Trung pls",
             icon: "warning",
-            title: "Something's wrong. Contact Trung pls"
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
           })
         );
     },
@@ -308,9 +323,14 @@ export default {
         })
         .catch(error => {
           console.log(error);
-          Toast.fire({
+          this.$swal({
+            title: "Something's wrong with get this product. Contact Trung pls",
             icon: "warning",
-            title: "Something's wrong with get this product. Contact Trung pls"
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
           });
         });
     }
