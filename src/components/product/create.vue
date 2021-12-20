@@ -245,7 +245,7 @@ export default {
       this.form.productImgs = event.target.files;
     },
     onUploadThumbnail(event) {
-      console.log(event.target.files[0]);
+      // console.log(event.target.files[0]);
       this.form.productThambnail = event.target.files[0];
     },
     onSubmit() {
@@ -266,7 +266,7 @@ export default {
       }
       $.ajax(Object.assign({}, this.options, { data: formData }))
         .then(res => {
-          console.log(res);
+          // console.log(res);
           this.loading = false;
           this.$router.push({ name: "product" });
           this.$swal({
@@ -280,7 +280,17 @@ export default {
           });
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
+          this.$swal({
+            title: "Error",
+            text: "Something get wrong!",
+            icon: "error",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+          });
         });
     },
     onCancel() {
@@ -290,7 +300,7 @@ export default {
       this.form.categoriesId = this.categories.filter(
         obj => obj.categoryName === value
       )[0]._id;
-      console.log(this.form.categoriesId);
+      // console.log(this.form.categoriesId);
     }
   }
 };

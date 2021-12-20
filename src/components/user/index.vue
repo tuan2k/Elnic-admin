@@ -76,11 +76,11 @@ import axios from "axios";
 export default {
   created() {
     if (!User.loggedIn()) {
-      this.$router.push({ name: "/admin/login" });
+      this.$router.push({ name: "login" });
     }
-    this.allUser();
   },
   computed: {
+<<<<<<< HEAD
     userData() {
       const dataUser = this.users.filter(obj => {
         var checkRole = false;
@@ -90,6 +90,17 @@ export default {
         return checkRole;
       });
       return dataUser;
+=======
+    users: {
+      get() {
+        return this.$store.state.users;
+      }
+    },
+    rows: {
+      get() {
+        return this.users.length;
+      }
+>>>>>>> bc431527d5d4fbe088a97e1917133a06be5733da
     },
     filtersearch() {
       return this.users.filter(user => {
@@ -97,11 +108,18 @@ export default {
       });
     }
   },
+  mounted() {
+    this.$store.dispatch("getUsers");
+  },
   data() {
     return {
-      users: [],
+      //   users: [],
       searchTerm: "",
+<<<<<<< HEAD
       rows: 0,
+=======
+      //   rows: 0,
+>>>>>>> bc431527d5d4fbe088a97e1917133a06be5733da
       perPage: 10,
       currentPage: 1,
       fields: ["username", "email", "phone"]
@@ -109,15 +127,6 @@ export default {
   },
   mounted() {},
   methods: {
-    allUser() {
-      axios
-        .get("https://elnic.herokuapp.com/api/user")
-        .then(({ data }) => {
-          this.users = data;
-          this.rows = this.users.length;
-        })
-        .catch();
-    },
     deleteUser(id) {
       this.$swal({
         title: "Are you sure?",

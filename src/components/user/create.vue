@@ -103,9 +103,9 @@ import axios from 'axios';
 export default {
     name : "create-product",
     created() {
-        // if (!User.loggedIn()) {
-        //     this.$router.push({ name: '/admin/login' })
-        // }
+        if (!User.loggedIn()) {
+            this.$router.push({ name: 'login' })
+        }
         this.allProduct();
     },
     computed:{

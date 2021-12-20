@@ -13,7 +13,11 @@
                       <form @submit.prevent="login" class="user">
                         <div class="form-group">
                           <label><strong>Username</strong></label>
-                          <input v-model="form.username" class="form-control" />
+                          <input
+                            v-model="form.username"
+                            class="form-control"
+                            required
+                          />
                           <!-- <small class="text-danger" v-if="errors.username">{{ errors.username[0] }}</small> -->
                         </div>
                         <div class="form-group">
@@ -22,6 +26,7 @@
                             type="password"
                             v-model="form.password"
                             class="form-control"
+                            required
                           />
                           <!-- <small class="text-danger" v-if="errors.password">{{ errors.password[0] }}</small> -->
                         </div>
@@ -38,12 +43,15 @@
                               <label
                                 class="custom-control-label"
                                 for="basic_checkbox_1"
-                                >Remember me</label
                               >
+                                Remember me
+                              </label>
                             </div>
                           </div>
                           <div class="form-group">
-                            <a href="">Forgot Password?</a>
+                            <a href="#" @click="onClickForgotPassword">
+                              Forgot Password?
+                            </a>
                           </div>
                         </div>
                         <div class="text-center">
@@ -51,7 +59,7 @@
                             type="submit"
                             class="btn btn-primary btn-block"
                           >
-                            Sign in
+                            Login
                           </button>
                         </div>
                       </form>
@@ -86,8 +94,18 @@ export default {
     };
   },
   methods: {
+    onClickForgotPassword() {
+      this.$swal({
+        title: "Please call to administrator to take password",
+        icon: "warning",
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3500,
+        timerProgressBar: true
+      });
+    },
     login() {
-      // console.log(this.form.username + this.form.password);
       axios
         .post("https://elnic.herokuapp.com/api/auth/signin", this.form)
         .then(res => {
@@ -106,7 +124,7 @@ export default {
         })
         .catch(error => {
           this.errors = error.response;
-          console.log(error);
+          // console.log(this.errors);
           this.$swal({
             title: "Invalid Email or Password",
             icon: "error",

@@ -1,12 +1,14 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
+
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
     categories: [],
-    products: []
+    products: [],
+    users: []
   },
   getters: {},
   mutations: {},
@@ -25,6 +27,14 @@ export const store = new Vuex.Store({
         .catch(() => Notification.error())
         .then(({ data }) => {
           this.state.products = data;
+        });
+    },
+    getUsers() {
+      axios
+        .get("https://elnic.herokuapp.com/api/user")
+        .catch(() => Notification.error())
+        .then(({ data }) => {
+          this.state.users = data;
         });
     }
   }
