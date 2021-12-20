@@ -93,15 +93,15 @@ export default {
         .then(res => {
           // console.log(res);
           // User.responseAfterLogin(res);
-          this.$swal({
-            title: "Signed in successfully",
-            icon: "success",
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 2500,
-            timerProgressBar: true
-          });
+          // this.$swal({
+          //   title: "Signed in successfully",
+          //   icon: "success",
+          //   toast: true,
+          //   position: "top-end",
+          //   showConfirmButton: false,
+          //   timer: 2500,
+          //   timerProgressBar: true
+          // });
           this.$router.push({ name: "home" });
         })
         .catch(error => {
