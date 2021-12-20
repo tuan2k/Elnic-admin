@@ -139,7 +139,7 @@ export default {
         .catch();
     },
     deleteProduct(id) {
-      Swal.fire({
+      this.$swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
         icon: "warning",
