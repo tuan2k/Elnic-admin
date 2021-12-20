@@ -231,11 +231,11 @@ export default {
         productThambnail: "",
         productImgs: []
       },
-       options:{
-                url: 'https://elnic-api.herokuapp.com/api/product',
-                type: "POST",
-                processData: false, 
-                contentType: false 
+      options: {
+        url: "https://elnic-api.herokuapp.com/api/product",
+        type: "POST",
+        processData: false,
+        contentType: false
       },
       nameCategory: "",
       loading: false
@@ -262,23 +262,27 @@ export default {
       formData.append("status", this.form.status);
       formData.append("categoriesId", this.form.categoriesId);
       formData.append("productThambnail", this.form.productThambnail);
-      for (let i=0;i<this.form.productImgs.length;i++){
-           formData.append("productImgs", this.form.productImgs[i]);
+      for (let i = 0; i < this.form.productImgs.length; i++) {
+        formData.append("productImgs", this.form.productImgs[i]);
       }
-      $.ajax(Object.assign({}, this.options, {data: formData}))
-            .then( (res) => {
-                console.log(res);
-                this.loading= false;
-                this.$router.push({ name: "product"})
-                    Toast.fire({
-                    icon: 'success',
-                    title: 'Thêm sản phẩm thành công!!!'
-         	    });
-            })
-            .catch( (err) => {
-                console.log(err)
-            });
-     
+      $.ajax(Object.assign({}, this.options, { data: formData }))
+        .then(res => {
+          console.log(res);
+          this.loading = false;
+          this.$router.push({ name: "product" });
+          this.$swal({
+            title: "Create product Successfully",
+            icon: "success",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     onCancel() {
       this.$router.push({ name: "product" });

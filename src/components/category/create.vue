@@ -86,9 +86,14 @@ export default {
       axios
         .post("https://elnic-api.herokuapp.com/api/categories", this.form)
         .then(() => {
-          Toast.fire({
+          this.$swal({
+            title: "Add Category Successfully",
             icon: "success",
-            title: "Add Category Successfully"
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
           });
           this.loading = false;
           this.$router.push({ name: "category" });

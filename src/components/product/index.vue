@@ -139,33 +139,50 @@ export default {
         .catch();
     },
     deleteProduct(id) {
-      this.$swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
-      }).then(result => {
-        if (result.isConfirmed) {
-          axios
-            .delete("https://elnic-api.herokuapp.com/api/product/" + id)
-            .then(() => {
-              this.products = this.products.filter(product => {
-                return product._id != id;
+      this.$swal
+        .fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!"
+        })
+        .then(result => {
+          if (result.isConfirmed) {
+            axios
+              .delete("https://elnic-api.herokuapp.com/api/product/" + id)
+              .then(() => {
+                this.products = this.products.filter(product => {
+                  return product._id != id;
+                });
+                this.$swal({
+                  title: "Deleted!",
+                  text: "Your file has been deleted.",
+                  icon: "success",
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 2500,
+                  timerProgressBar: true
+                });
+              })
+              .catch(() => {
+                this.$swal({
+                  title: "Error!",
+                  text:
+                    "Something make us can not delete product, pls contact Viet Trung",
+                  icon: "warning",
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 2500,
+                  timerProgressBar: true
+                });
               });
-              Swal.fire("Deleted!", "Your file has been deleted.", "success");
-            })
-            .catch(() => {
-              Toast.fire({
-                icon: "warning",
-                title:
-                  "Something make us can not delete product, pls contact Viet Trung"
-              });
-            });
-        }
-      });
+          }
+        });
     }
   }
 };
