@@ -6,14 +6,6 @@
           <div class="col-xl-12 col-lg-12 col-xxl-12 col-md-12">
             <div class="card profile-tab">
               <div class="card-header">
-                <span>
-                  <router-link
-                    to="create-category"
-                    class="btn btn-primary mx-2 my-2"
-                    style="width: 130px"
-                    >Add Category
-                  </router-link>
-                </span>
                 <input
                   v-model="searchTerm"
                   class="form-control mx-1 my-2"
@@ -26,48 +18,40 @@
                 <div class="tab-content">
                   <div id="my-posts" class="tab-pane fade active show">
                     <div class="table-responsive">
-                      <b-table
-                        class="table table-responsive-md"
-                        id="my-table"
-                        :items="filtersearch"
-                        :per-page="perPage"
-                        :fields="fields"
-                        :current-page="currentPage"
-                        small
-                      >
-                        <template #cell(actions)="row">
-                          <router-link
-                            :to="{
-                              name: 'edit-category',
-                              params: { id: row.item._id }
-                            }"
-                            class="btn btn-sm btn-primary"
-                            ><font color="white">Edit</font>
-                          </router-link>
-                          <a
-                            @click="deleteCategory(row.item._id)"
-                            class="btn btn-sm btn-danger"
-                            ><font color="white">Delete</font></a
-                          >
-                        </template>
-                      </b-table>
+                        <div>
+                        <table class="table header-border table-hover verticle-middle  table-bordered">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th><strong>STT</strong></th>
+                                                                            <th>Hình ảnh</th>
+                                                                            <th><strong>Tên sản phẩm</strong></th>
+                                                                            <th><strong>Số lượng</strong></th>
+                                                                            <th><strong>Giá tiền</strong></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr v-for="(td,index) in products" :key="td._id">
+                                                                              <td>{{ index +1 }}</td>
+                                                                              <td>
+                                                                                  <img :src="td.productThambnail" />
+                                                                              </td>
+                                                                              <td>{{ td.productName }}</td>
+                                                                              <td>
+                                                                                  <span v-for="pq in listProId" :key="pq._id">
+                                                                                        <span v-if="pq._id === td._id">{{pq.userQuantity}}</span>
+                                                                                  </span>
+                                                                              </td>
+                                                                              <td>{{ td.sellingPrice }}</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="overflow-auto">
-          <b-pagination
-            v-model="currentPage"
-            :total-rows="rows"
-            :per-page="perPage"
-            first-text="First"
-            prev-text="Prev"
-            next-text="Next"
-            last-text="Last"
-          ></b-pagination>
         </div>
       </div>
     </div>
@@ -77,23 +61,18 @@
 <script type="text/javascript">
 import axios from "axios";
 export default {
-  name: "category",
+  name: "orderDetail",
   created() {
     if (!User.loggedIn()) {
-      this.$router.push({ name: "/admin/login" });
+      this.$router.push({ name: "login" });
     }
-    this.allCategory();
-  },
-  computed: {
-    filtersearch() {
-      return this.categories.filter(category => {
-        return category.categoryName.match(this.searchTerm);
-      });
-    }
+    this.getOrder();
   },
   data() {
     return {
-      categories: [],
+      orders: [],
+      listProId: [],
+      products: [],
       items: [],
       rows: 0,
       perPage: 5,
@@ -103,14 +82,28 @@ export default {
     };
   },
   methods: {
-    allCategory() {
+    getOrder() {
+      let id = this.$route.params.id;
       axios
-        .get("https://elnic-api.herokuapp.com/api/categories")
+        .get("https://elnic-api.herokuapp.com/api/orders/"+id)
         .then(({ data }) => {
-          this.categories = data;
-          this.rows = this.categories.length;
+          this.orders = data;
+          this.listProId = this.orders.productList;
+          console.log(this.listProId);
+          this.getProduct();
         })
         .catch();
+      console.log(this.products);
+    },
+    getProduct(){
+      for (let i=0;i<this.listProId.length;i++){
+      axios
+        .get("https://elnic-api.herokuapp.com/api/product/"+this.listProId[i]._id)
+        .then(({ data }) => {
+          this.products.push(data[0]);
+        })
+        .catch();
+      }
     },
     deleteCategory(id) {
       Swal.fire({

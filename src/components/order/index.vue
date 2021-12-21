@@ -17,49 +17,49 @@
               <div class="card-body custom-tab-1">
                 <div class="tab-content">
                   <div id="my-posts" class="tab-pane fade active show">
-                    <div class="table-responsive">
-                      <b-table
-                        class="table table-responsive-md"
-                        id="my-table"
-                        :items="orders"
-                        :per-page="perPage"
-                        :fields="fields"
-                        :current-page="currentPage"
-                        small
-                      >
-                        <template #cell(actions)="row">
-                          <router-link
-                            :to="{
-                              name: 'edit-category',
-                              params: { id: row.item._id }
-                            }"
-                            class="btn btn-sm btn-primary"
-                            ><font color="white">Xem</font>
-                          </router-link>
-                          <a
-                            @click="deleteCategory(row.item._id)"
-                            class="btn btn-sm btn-danger"
-                            ><font color="white">Delete</font></a
-                          >
-                        </template>
-                      </b-table>
+                    <div class="col-xl-12 col-xxl-12 col-lg-12 col-md-12 col-sm-12">
+                                                    <div>
+                                                        <h5 class="text-primary mb-4">Tọa dộ</h5>
+                                                        <div class="card-body">
+                                                            <div class="table-responsive">
+                                                                <table class="table header-border table-hover verticle-middle  table-bordered">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th><strong>STT</strong></th>
+                                                                            <th><strong>Tên người mua</strong></th>
+                                                                            <th><strong>Email</strong></th>
+                                                                            <th><strong>Số điện thoại</strong></th>
+                                                                            <th><strong>Tổng tiền</strong></th>
+                                                                            <th><strong>Chức năng</strong></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr v-for="(td,index) in orders" :key="td._id">
+                                                                              <td>{{ index +1 }}</td>
+                                                                              <td>
+                                                                                  <span v-for="u in users" :key="u._id">
+                                                                                      <span v-if="td.userId === u._id"> {{ u.username }}</span>
+                                                                                  </span>
+                                                                              </td>
+                                                                              <td>{{ td.email }}</td>
+                                                                              <td>{{ td.phone }}</td>
+                                                                              <td>10</td>
+                                                                              <td>
+                                                                                  <router-link :to="{name:'orderDetail',params: { id: td._id }}" class="btn btn-primary">Xem</router-link>
+                                                                                  <span class="btn btn-danger" v-on:click="deleteOrder(td._id)">Delete</span>
+                                                                              </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="overflow-auto">
-          <b-pagination
-            v-model="currentPage"
-            :total-rows="rows"
-            :per-page="perPage"
-            first-text="First"
-            prev-text="Prev"
-            next-text="Next"
-            last-text="Last"
-          ></b-pagination>
         </div>
       </div>
     </div>
@@ -72,9 +72,12 @@ export default {
   name: "category",
   created() {
     if (!User.loggedIn()) {
-      this.$router.push({ name: "/admin/login" });
+      this.$router.push({ name: "login" });
     }
-    this.allCategory();
+    this.allOrder();
+    this.users = this.$store.state.users;
+    this.products = this.$store.state.products;
+    console.log(this.users);
   },
   computed: {
     filtersearch() {
@@ -86,6 +89,8 @@ export default {
   data() {
     return {
       orders: [],
+      users: [],
+      products: [],
       items: [],
       rows: 0,
       perPage: 5,
@@ -95,16 +100,11 @@ export default {
     };
   },
   methods: {
-    allCategory() {
+    allOrder() {
       axios
         .get("https://elnic-api.herokuapp.com/api/orders")
         .then(({ data }) => {
-          this.orders = data;
-          let arr = [];
-          for (let i=0;i<=10;i++){
-              arr.push(this.orders[i])
-          }
-          this.orders = arr;
+          this.orders = data.data;
           console.log(this.orders);
           this.rows = this.orders.length;
         })

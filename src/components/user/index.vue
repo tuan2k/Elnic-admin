@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="content-body">
-      <!-- row -->
       <div class="container-fluid">
         <div class="row">
           <div class="col-xl-12 col-lg-12 col-xxl-12 col-md-12">
@@ -26,7 +25,7 @@
                     <div class="table-responsive">
                       <b-table
                         class="table table-responsive-md"
-                        :items="filtersearch"
+                        :items="users"
                         :per-page="perPage"
                         :fields="fields"
                         :current-page="currentPage"
@@ -78,9 +77,11 @@ export default {
     if (!User.loggedIn()) {
       this.$router.push({ name: "login" });
     }
+    this.$store.dispatch("getUsers");
+    this.users = this.$store.state.users;
+    this.rows = this.users.length;
   },
   computed: {
-<<<<<<< HEAD
     userData() {
       const dataUser = this.users.filter(obj => {
         var checkRole = false;
@@ -90,36 +91,21 @@ export default {
         return checkRole;
       });
       return dataUser;
-=======
-    users: {
-      get() {
-        return this.$store.state.users;
-      }
     },
-    rows: {
-      get() {
-        return this.users.length;
-      }
->>>>>>> bc431527d5d4fbe088a97e1917133a06be5733da
-    },
-    filtersearch() {
-      return this.users.filter(user => {
-        return user.username.match(this.searchTerm);
-      });
-    }
+    // filtersearch() {
+    //   return this.users.filter(user => {
+    //     return user.username.match(this.searchTerm);
+    //   });
+    //}
   },
   mounted() {
     this.$store.dispatch("getUsers");
   },
   data() {
     return {
-      //   users: [],
+      users: [],
       searchTerm: "",
-<<<<<<< HEAD
       rows: 0,
-=======
-      //   rows: 0,
->>>>>>> bc431527d5d4fbe088a97e1917133a06be5733da
       perPage: 10,
       currentPage: 1,
       fields: ["username", "email", "phone"]
