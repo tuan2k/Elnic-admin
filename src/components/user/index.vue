@@ -80,7 +80,6 @@ export default {
     }
   },
   computed: {
-<<<<<<< HEAD
     userData() {
       const dataUser = this.users.filter(obj => {
         var checkRole = false;
@@ -90,7 +89,7 @@ export default {
         return checkRole;
       });
       return dataUser;
-=======
+    },
     users: {
       get() {
         return this.$store.state.users;
@@ -100,7 +99,6 @@ export default {
       get() {
         return this.users.length;
       }
->>>>>>> bc431527d5d4fbe088a97e1917133a06be5733da
     },
     filtersearch() {
       return this.users.filter(user => {
@@ -115,11 +113,7 @@ export default {
     return {
       //   users: [],
       searchTerm: "",
-<<<<<<< HEAD
-      rows: 0,
-=======
       //   rows: 0,
->>>>>>> bc431527d5d4fbe088a97e1917133a06be5733da
       perPage: 10,
       currentPage: 1,
       fields: ["username", "email", "phone"]
