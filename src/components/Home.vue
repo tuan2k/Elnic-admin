@@ -16,7 +16,7 @@
               </div>
               <div class="card-body custom-tab-1">
                 <ul class="nav nav-tabs mb-3">
-                  <li class="nav-item">
+                  <!-- <li class="nav-item">
                     <a
                       href="#my-posts"
                       data-toggle="tab"
@@ -36,7 +36,7 @@
                       class="nav-link pb-2"
                       >Other</a
                     >
-                  </li>
+                  </li> -->
                 </ul>
                 <div class="tab-content">
                   <div id="my-posts" class="tab-pane fade active show">
@@ -49,7 +49,7 @@
                             <th scope="col">Status</th>
                             <th scope="col">Date</th>
                             <th scope="col">Ammount</th>
-                            <th scope="col">Action</th>
+                            <!-- <th scope="col">Action</th> -->
                           </tr>
                         </thead>
                         <tbody>
@@ -70,7 +70,7 @@
                             </td>
                             <td>12 August 2020</td>
                             <td>$100</td>
-                            <td>
+                            <!-- <td>
                               <router-link
                                 to="/admin/viewDetail"
                                 class="btn btn-info btn-sm"
@@ -86,7 +86,7 @@
                                 class="btn btn-danger btn-sm"
                                 >Delete</router-link
                               >
-                            </td>
+                            </td> -->
                           </tr>
                           <tr>
                             <td>
@@ -105,7 +105,7 @@
                             </td>
                             <td>11 July 2020</td>
                             <td>$200</td>
-                            <td>
+                            <!-- <td>
                               <router-link
                                 to="/admin/viewDetail"
                                 class="btn btn-info btn-sm"
@@ -121,7 +121,7 @@
                                 class="btn btn-danger btn-sm"
                                 >Delete</router-link
                               >
-                            </td>
+                            </td> -->
                           </tr>
                           <tr>
                             <td>
@@ -140,7 +140,7 @@
                             </td>
                             <td>10 May 2020</td>
                             <td>$400</td>
-                            <td>
+                            <!-- <td>
                               <router-link
                                 to="/admin/viewDetail"
                                 class="btn btn-info btn-sm"
@@ -156,7 +156,7 @@
                                 class="btn btn-danger btn-sm"
                                 >Delete</router-link
                               >
-                            </td>
+                            </td> -->
                           </tr>
                           <tr>
                             <td>
@@ -175,7 +175,7 @@
                             </td>
                             <td>09 April 2020</td>
                             <td>$300</td>
-                            <td>
+                            <!-- <td>
                               <router-link
                                 to="/admin/viewDetail"
                                 class="btn btn-info btn-sm"
@@ -191,7 +191,7 @@
                                 class="btn btn-danger btn-sm"
                                 >Delete</router-link
                               >
-                            </td>
+                            </td> -->
                           </tr>
                           <tr>
                             <td>
@@ -210,7 +210,7 @@
                             </td>
                             <td>08 March 2020</td>
                             <td>$500</td>
-                            <td>
+                            <!-- <td>
                               <router-link
                                 to="/admin/viewDetail"
                                 class="btn btn-info btn-sm"
@@ -226,7 +226,7 @@
                                 class="btn btn-danger btn-sm"
                                 >Delete</router-link
                               >
-                            </td>
+                            </td> -->
                           </tr>
                         </tbody>
                       </table>

@@ -30,7 +30,7 @@
                     <div class="table-responsive">
                       <b-table
                         class="table table-responsive-md table-bordered"
-                        :items="filtersearch"
+                        :items="products"
                         :per-page="perPage"
                         :fields="fields"
                         :current-page="currentPage"
@@ -98,24 +98,35 @@ import axios from "axios";
 export default {
   created() {
     if (!User.loggedIn()) {
-      this.$router.push({ name: "/admin/login" });
+      this.$router.push({ name: "login" });
     }
-    this.allProduct();
-    this.$store.dispatch("getCategories");
-    this.$store.dispatch("getProducts");
   },
   computed: {
     filtersearch() {
       return this.products.filter(product => {
         return product.productName.match(this.searchTerm);
       });
+    },
+    products: {
+      get() {
+        return this.$store.state.products;
+      }
+    },
+    rows: {
+      get() {
+        return this.products.length;
+      }
     }
+  },
+  mounted() {
+    this.$store.dispatch("getCategories");
+    this.$store.dispatch("getProducts");
   },
   data() {
     return {
-      products: [],
+      // products: [],
       searchTerm: "",
-      rows: 0,
+      // rows: 0,
       perPage: 5,
       currentPage: 1,
       fields: [
@@ -129,43 +140,50 @@ export default {
     };
   },
   methods: {
-    allProduct() {
-      axios
-        .get("https://elnic-api.herokuapp.com/api/product")
-        .then(({ data }) => {
-          this.products = data;
-          this.rows = this.products.length;
-        })
-        .catch();
-    },
     deleteProduct(id) {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
-      }).then(result => {
-        if (result.isConfirmed) {
-          axios
-            .delete("https://elnic-api.herokuapp.com/api/product/" + id)
-            .then(() => {
-              this.products = this.products.filter(product => {
-                return product._id != id;
+      this.$swal
+        .fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!"
+        })
+        .then(result => {
+          if (result.isConfirmed) {
+            axios
+              .delete("https://elnic-api.herokuapp.com/api/product/" + id)
+              .then(() => {
+                this.products = this.products.filter(product => {
+                  return product._id != id;
+                });
+                this.$swal({
+                  title: "Deleted successfully!",
+                  icon: "success",
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 2500,
+                  timerProgressBar: true
+                });
+              })
+              .catch(() => {
+                this.$swal({
+                  title: "Error!",
+                  text:
+                    "Something make us can not delete product, pls contact Viet Trung",
+                  icon: "warning",
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 2500,
+                  timerProgressBar: true
+                });
               });
-              Swal.fire("Deleted!", "Your file has been deleted.", "success");
-            })
-            .catch(() => {
-              Toast.fire({
-                icon: "warning",
-                title:
-                  "Something make us can not delete product, pls contact Viet Trung"
-              });
-            });
-        }
-      });
+          }
+        });
     }
   }
 };

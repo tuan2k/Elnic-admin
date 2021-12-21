@@ -22,6 +22,7 @@
                         v-model="form.categoryName"
                         type="text"
                         class="form-control"
+                        required
                       />
                     </div>
                   </div>
@@ -67,7 +68,7 @@ export default {
   name: "create-category",
   created() {
     if (!User.loggedIn()) {
-      this.$router.push({ name: "/admin/login" });
+      this.$router.push({ name: "login" });
     }
   },
   data() {
@@ -86,16 +87,30 @@ export default {
       axios
         .post("https://elnic-api.herokuapp.com/api/categories", this.form)
         .then(() => {
-          Toast.fire({
+          this.$swal({
+            title: "Add Category Successfully",
             icon: "success",
-            title: "Add Category Successfully"
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
           });
           this.loading = false;
           this.$router.push({ name: "category" });
         })
         .catch(error => {
           this.errors = error;
-          console.log(this.errors);
+          this.$swal({
+            title: "Error",
+            text: error,
+            icon: "error",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+          });
         });
     },
     onCancel() {

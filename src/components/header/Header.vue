@@ -206,6 +206,7 @@ export default {
   name: "Header",
   methods: {
     onLogout() {
+      localStorage.removeItem("token");
       this.$router.push({ name: "login" });
     },
     onProfile() {

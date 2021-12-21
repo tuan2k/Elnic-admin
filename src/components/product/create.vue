@@ -150,7 +150,6 @@
                         type="file"
                         class="dropify"
                         @change="onUploadThumbnail($event)"
-                        required
                       />
                     </div>
                   </div>
@@ -231,11 +230,11 @@ export default {
         productThambnail: "",
         productImgs: []
       },
-       options:{
-                url: 'https://elnic-api.herokuapp.com/api/product',
-                type: "POST",
-                processData: false, 
-                contentType: false 
+      options: {
+        url: "https://elnic-api.herokuapp.com/api/product",
+        type: "POST",
+        processData: false,
+        contentType: false
       },
       nameCategory: "",
       loading: false
@@ -246,7 +245,7 @@ export default {
       this.form.productImgs = event.target.files;
     },
     onUploadThumbnail(event) {
-      console.log(event.target.files[0]);
+      // console.log(event.target.files[0]);
       this.form.productThambnail = event.target.files[0];
     },
     onSubmit() {
@@ -262,23 +261,37 @@ export default {
       formData.append("status", this.form.status);
       formData.append("categoriesId", this.form.categoriesId);
       formData.append("productThambnail", this.form.productThambnail);
-      for (let i=0;i<this.form.productImgs.length;i++){
-           formData.append("productImgs", this.form.productImgs[i]);
+      for (let i = 0; i < this.form.productImgs.length; i++) {
+        formData.append("productImgs", this.form.productImgs[i]);
       }
-      $.ajax(Object.assign({}, this.options, {data: formData}))
-            .then( (res) => {
-                console.log(res);
-                this.loading= false;
-                this.$router.push({ name: "product"})
-                    Toast.fire({
-                    icon: 'success',
-                    title: 'Thêm sản phẩm thành công!!!'
-         	    });
-            })
-            .catch( (err) => {
-                console.log(err)
-            });
-     
+      $.ajax(Object.assign({}, this.options, { data: formData }))
+        .then(res => {
+          // console.log(res);
+          this.loading = false;
+          this.$router.push({ name: "product" });
+          this.$swal({
+            title: "Create product Successfully",
+            icon: "success",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+          });
+        })
+        .catch(err => {
+          // console.log(err);
+          this.$swal({
+            title: "Error",
+            text: "Something get wrong!",
+            icon: "error",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+          });
+        });
     },
     onCancel() {
       this.$router.push({ name: "product" });
@@ -287,7 +300,7 @@ export default {
       this.form.categoriesId = this.categories.filter(
         obj => obj.categoryName === value
       )[0]._id;
-      console.log(this.form.categoriesId);
+      // console.log(this.form.categoriesId);
     }
   }
 };

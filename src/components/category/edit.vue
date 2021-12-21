@@ -82,10 +82,20 @@ export default {
       .get("https://elnic-api.herokuapp.com/api/categories/" + id)
       .then(({ data }) => {
         this.form = data;
-        console.log(data);
+        // console.log(data);
       })
       .catch(error => {
-        console.log(error);
+        // console.log(error);
+        this.$swal({
+          title: "Error",
+          text: "Something get wrong!",
+          icon: "error",
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 2500,
+          timerProgressBar: true
+        });
       });
   },
   data() {
@@ -107,9 +117,14 @@ export default {
         .then(() => {
           this.loading = false;
           this.$router.push({ name: "category" });
-          Toast.fire({
+          this.$swal({
+            title: "Update Category Successfully",
             icon: "success",
-            title: "Update Category Successfully"
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
           });
         })
         .catch(error => (this.errors = error.response.data.errors));

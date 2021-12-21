@@ -80,22 +80,34 @@ export default {
   name: "category",
   created() {
     if (!User.loggedIn()) {
-      this.$router.push({ name: "/admin/login" });
+      this.$router.push({ name: "login" });
     }
-    this.allCategory();
   },
   computed: {
     filtersearch() {
       return this.categories.filter(category => {
         return category.categoryName.match(this.searchTerm);
       });
+    },
+    categories: {
+      get() {
+        return this.$store.state.categories;
+      }
+    },
+    rows: {
+      get() {
+        return this.categories.length;
+      }
     }
+  },
+  mounted() {
+    this.$store.dispatch("getCategories");
   },
   data() {
     return {
-      categories: [],
+      // categories: [],
       items: [],
-      rows: 0,
+      // rows: 0,
       perPage: 5,
       currentPage: 1,
       fields: ["categoryName", { key: "actions", label: "Actions" }],
@@ -103,17 +115,8 @@ export default {
     };
   },
   methods: {
-    allCategory() {
-      axios
-        .get("https://elnic-api.herokuapp.com/api/categories")
-        .then(({ data }) => {
-          this.categories = data;
-          this.rows = this.categories.length;
-        })
-        .catch();
-    },
     deleteCategory(id) {
-      Swal.fire({
+      this.$swal({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
         icon: "warning",
@@ -129,11 +132,21 @@ export default {
               this.categories = this.categories.filter(cat => {
                 return cat._id != id;
               });
+              this.$swal({
+                title: "Deleted",
+                text: "Delete successfully!",
+                icon: "success",
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 2500,
+                timerProgressBar: true
+              });
             })
             .catch(() => {
               this.$router.push({ name: "category" });
             });
-          Swal.fire("Deleted!", "Your file has been deleted.", "success");
+          // this.$swal("Deleted!", "Delete successfully", "success");
         }
       });
     }

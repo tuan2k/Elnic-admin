@@ -168,7 +168,7 @@
                     <button type="submit" class="btn btn-primary">
                       Submit
                     </button>
-                    <b-button type="reset" variant="danger">Reset</b-button>
+                    <!-- <b-button type="reset" variant="danger">Reset</b-button> -->
                     <button
                       type="button"
                       class="btn btn-light"
@@ -237,21 +237,30 @@ export default {
   },
   mounted() {
     let id = this.$route.params.id;
+    // getProduct(id);
     axios
       .get("https://elnic-api.herokuapp.com/api/product/" + id)
+      .catch(error => {
+        // console.log(error);
+        this.$swal({
+          title: "Something's wrong with get this product. Contact Trung pls",
+          icon: "success",
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 2500,
+          timerProgressBar: true
+        });
+      })
       .then(({ data }) => {
         this.form = data[0];
+        // console.log(
+        //   this.categories.filter(obj => obj._id === this.form.categoriesId)[0]
+        // );
         this.nameCategory = this.categories.filter(
           obj => obj._id === this.form.categoriesId
         )[0].categoryName;
         // console.log(data[0]);
-      })
-      .catch(error => {
-        console.log(error);
-        Toast.fire({
-          icon: "warning",
-          title: "Something's wrong with get this product. Contact Trung pls"
-        });
       });
   },
   methods: {
@@ -259,9 +268,9 @@ export default {
       this.productImgs = event.target.files;
     },
     onUploadThumbnail(event) {
-      console.log(event.target.files[0]);
+      // console.log(event.target.files[0]);
       this.form.productThambnail = event.target.files[0];
-      console.log(event.target.files[0]);
+      // console.log(event.target.files[0]);
     },
     onSubmit() {
       let id = this.$route.params.id;
@@ -279,6 +288,7 @@ export default {
       formData.append("status", this.form.status);
       formData.append("categoriesId", this.form.categoriesId);
       formData.append("productThambnail", this.form.productThambnail);
+<<<<<<< HEAD
       for (let i=0;i<this.form.productImgs.length;i++){
            formData.append("productImgs", this.form.productImgs[i]);
       }
@@ -295,6 +305,34 @@ export default {
             .catch( (err) => {
                 console.log(err)
             });
+=======
+      formData.append("productImgs", this.form.productImgs);
+      axios
+        .put("https://elnic-api.herokuapp.com/api/product", formData)
+        .then(({ response }) => {
+          this.$swal({
+            title: response.message,
+            icon: "success",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+          });
+          setTimeout(this.$router.push({ name: "product" }), 1000);
+        })
+        .catch(() =>
+          this.$swal({
+            title: "Something's wrong. Contact Trung pls",
+            icon: "warning",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+          })
+        );
+>>>>>>> 661aba2456f0ec6e7c1dfde03da0e1ce303dfeb7
     },
 
     onCancel() {
@@ -308,19 +346,28 @@ export default {
       // console.log(this.form.categoriesId);
     },
 
-    async getProduct(id) {
-      await axios
+    getProduct(id) {
+      console.log("data[0]");
+      axios
         .get("https://elnic-api.herokuapp.com/api/product/" + id)
+        .catch(error => {
+          // console.log(error);
+          this.$swal({
+            title: "Something's wrong with get this product. Contact Trung pls",
+            icon: "warning",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+          });
+        })
         .then(({ data }) => {
           this.form = data[0];
-          console.log(data[0]);
-        })
-        .catch(error => {
-          console.log(error);
-          Toast.fire({
-            icon: "warning",
-            title: "Something's wrong with get this product. Contact Trung pls"
-          });
+          this.nameCategory = this.categories.filter(
+            obj => obj._id === this.form.categoriesId
+          )[0].categoryName;
+          // console.log(data[0]);
         });
     }
   }
