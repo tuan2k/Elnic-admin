@@ -150,7 +150,6 @@
                         type="file"
                         class="dropify"
                         @change="onUploadThumbnail"
-                        required
                       />
                     </div>
                   </div>
@@ -195,7 +194,8 @@ export default {
     if (!User.loggedIn()) {
       this.$router.push({ name: "login" });
     }
-
+    this.id = this.$route.params.id;
+    console.log(this.id);
     // getProduct(id);
   },
   computed: {
@@ -225,7 +225,14 @@ export default {
         productThambnail: "",
         productImgs: []
       },
-      nameCategory: ""
+      id: '',
+      nameCategory: "",
+      options:{
+                url: '',
+                type: "PUT",
+                processData: false, 
+                contentType: false 
+      },
     };
   },
   mounted() {
@@ -258,10 +265,11 @@ export default {
     },
     onSubmit() {
       let id = this.$route.params.id;
+      this.options.url = 'https://elnic-api.herokuapp.com/api/product/'+ id;
       let formData = new FormData();
       formData.append("_id", id);
       formData.append("productName", this.form.productName);
-      formData.append("productQty", this.form.productName);
+      formData.append("productQty", this.form.productQty);
       formData.append("discountPrice", this.form.discountPrice);
       formData.append("sellingPrice", this.form.sellingPrice);
       formData.append("shortDescp", this.form.shortDescp);
@@ -271,22 +279,22 @@ export default {
       formData.append("status", this.form.status);
       formData.append("categoriesId", this.form.categoriesId);
       formData.append("productThambnail", this.form.productThambnail);
-      formData.append("productImgs", this.form.productImgs);
-      axios
-        .put("https://elnic-api.herokuapp.com/api/product", formData)
-        .then(({ response }) => {
-          Toast.fire({
-            icon: "success",
-            title: response.message
-          });
-          setTimeout(this.$router.push({ name: "product" }), 1000);
-        })
-        .catch(() =>
-          Toast.fire({
-            icon: "warning",
-            title: "Something's wrong. Contact Trung pls"
-          })
-        );
+      for (let i=0;i<this.form.productImgs.length;i++){
+           formData.append("productImgs", this.form.productImgs[i]);
+      }
+      $.ajax(Object.assign({}, this.options, {data: formData}))
+            .then( (res) => {
+                console.log(res);
+                this.loading= false;
+                this.$router.push({ name: "product"})
+                    Toast.fire({
+                    icon: 'success',
+                    title: 'Cập nhật sản phẩm thành công!!!'
+         	    });
+            })
+            .catch( (err) => {
+                console.log(err)
+            });
     },
 
     onCancel() {

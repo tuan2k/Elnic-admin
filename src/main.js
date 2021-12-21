@@ -15,6 +15,12 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 Vue.use(Vuex);
 Vue.config.productionTip = false;
 
+
+import Chartkick from 'vue-chartkick'
+import Chart from 'chart.js'
+
+Vue.use(Chartkick.use(Chart))
+
 window.User = User;
 window.Notification = Notification;
 window.Swal = Swal;
