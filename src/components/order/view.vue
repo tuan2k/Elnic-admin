@@ -15,6 +15,10 @@
                 />
               </div>
               <div class="card-body custom-tab-1">
+                <div> 
+                   <router-link class="btn btn-primary" to="/order">Danh sách đơn hàng</router-link>
+                </div>
+                <br />
                 <div class="tab-content">
                   <div id="my-posts" class="tab-pane fade active show">
                     <div class="table-responsive">

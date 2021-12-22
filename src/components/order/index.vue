@@ -61,6 +61,23 @@
             </div>
           </div>
         </div>
+        <nav aria-label="...">
+                 <ul class="pagination pagination-lg pageh">
+                 <span class="page-item"><span class="page-link" v-on:click="getOrderPage(currentPage -1)">Trang trước</span></span>
+                 <li v-for="page in totalPages" :key="page">
+                 <span v-if="currentPage === page">
+                 <span class="page-item active"><span class="page-link" v-on:click="getOrderPage(page)">{{page}}</span></span>
+                 </span>
+                 <span v-else>
+                 <span class="page-item"><span v-if="page <= 3 && page !== currentPage" class="page-link" v-on:click="getOrderPage(page)">{{page}}</span></span>
+                 <span class="page-item"><span v-if="totalPages > 20 && page%20 === 0" class="page-link" v-on:click="getOrderPage(page)">{{page}}</span></span>
+                 <span class="page-item"><span v-if="page === 4" class="page-link">...</span></span>
+                 <span class="page-item"><span v-if="page >= totalPages-1 && page !== currentPage" class="page-link" v-on:click="getOrderPage(page)">{{page}}</span></span>
+                 </span>
+                 </li>
+                 <span class="page-item"><span class="page-link" v-on:click="getOrderPage(currentPage+1)">Trang sau</span></span>
+                 </ul>
+                 </nav>
       </div>
     </div>
   </div>
@@ -89,14 +106,15 @@ export default {
   data() {
     return {
       orders: [],
+      orderAll: [],
       users: [],
       products: [],
       items: [],
       rows: 0,
-      perPage: 5,
+      perPage: 10,
       currentPage: 1,
-      fields: ["userId", "email", "phone", { key: "actions", label: "Actions" }],
-      searchTerm: ""
+      searchTerm: "",
+      totalPages: "",
     };
   },
   methods: {
@@ -104,11 +122,22 @@ export default {
       axios
         .get("https://elnic-api.herokuapp.com/api/orders")
         .then(({ data }) => {
-          this.orders = data.data;
-          console.log(this.orders);
-          this.rows = this.orders.length;
+          this.orderAll = data.data;
+          console.log(this.orderAll);
+          this.totalPages = Math.ceil(this.orderAll.length / this.perPage);
+          this.orders = this.orderAll.slice(0,this.perPage);
         })
         .catch();
+    },
+    getOrderPage(page){
+      if(page < 1) {
+        page =1;
+      }
+      if (page > this.totalPages){
+        page = this.totalPages;
+      }
+      this.currentPage = page;
+       this.orders = this.orderAll.slice((page-1)*this.perPage +1,page*this.perPage);
     },
     deleteCategory(id) {
       Swal.fire({
