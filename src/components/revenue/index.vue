@@ -32,6 +32,11 @@ export default {
       this.$router.push({ name: "login" });
     }
     this.allOrder();
+    this.products = this.$store.state.products;
+    console.log(this.products);
+  },
+   mounted() {
+    this.$store.dispatch("getProducts");
   },
   data() {
     return {
@@ -41,6 +46,7 @@ export default {
       type: [{id: 0, name: 'doanh thu'},{ id: 1, name: 'số lượng'}],
       nam: 2021,
       ty: 0,
+      products: [],
     };
   },
   methods: {
@@ -109,13 +115,12 @@ export default {
           this.chart.push(obj1);this.chart.push(obj2);this.chart.push(obj3);this.chart.push(obj4);
           this.chart.push(obj5);this.chart.push(obj6);this.chart.push(obj7);this.chart.push(obj8);
           this.chart.push(obj9);this.chart.push(obj10);this.chart.push(obj11);this.chart.push(obj12);
-          
           }
        })
         .catch();
     },
     selectType(){
-        console.log(this.ty);
+        console.log(this.orders);
         this.chart = [];
         let obj1 = [1,0],obj2 =[2,0],obj3 = [3,0],obj4 = [4,0],obj5 = [5,0],obj6 = [6,0],obj7 = [7,0],
           obj8 = [8,0],obj9 = [9,0],obj10 = [10,0],obj11 = [11,0],obj12 = [12,0];
@@ -181,7 +186,27 @@ export default {
           this.chart.push(obj9);this.chart.push(obj10);this.chart.push(obj11);this.chart.push(obj12);
           
         } else {
-
+           let obj = [0,0];
+           for (let j=0;j<this.orders.length;j++){
+              let dtt = new Date(this.orders[j].createdAt);
+              if (this.nam === dtt.getFullYear()) {
+                  for (let k=0;k < this.orders[j].productList.length; k++){
+                      obj[0] = this.orders[j].productList[k]._id;
+                      obj[1] = this.orders[j].productList[k].userQuantity;
+                      this.chart.push(obj);
+                      obj = [0,0];
+                  }
+              }
+           }
+           for (let g=0;g<this.chart.length;g++){
+               for (let u=0;u<this.products.length;u++){
+                   console.log(this.chart[g][0]);
+                   if (this.products[u]._id == this.chart[g][0]) {
+                       this.chart[g][0] = this.products[u].productName;
+                   }
+               }
+           }
+           console.log(this.chart);
         }
     },
   }
