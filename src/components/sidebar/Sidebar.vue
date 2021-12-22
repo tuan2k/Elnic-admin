@@ -7,25 +7,37 @@
           <li>
             <router-link aria-expanded="false" to="/">
               <i class="la la-home"></i>
-              <span class="nav-text color_text">Home</span>
+              <span class="nav-text color_text">Trang chủ</span>
             </router-link>
           </li>
           <li>
             <router-link aria-expanded="false" to="/user">
               <i class="la la-user"></i>
-              <span>User</span>
+              <span>Người dùng</span>
             </router-link>
           </li>
           <li>
             <router-link aria-expanded="false" to="/category">
               <i class="la la-user"></i>
-              <span>Category</span>
+              <span>Tên doanh mục</span>
             </router-link>
           </li>
           <li>
             <router-link aria-expanded="false" to="/product">
               <i class="la la-user"></i>
-              <span>Product</span>
+              <span>Sản phẩm</span>
+            </router-link>
+          </li>
+          <li>
+            <router-link aria-expanded="false" to="/order">
+              <i class="la la-user"></i>
+              <span>Đơn đặt hàng</span>
+            </router-link>
+          </li>
+          <li>
+            <router-link aria-expanded="false" to="/revenue">
+              <i class="la la-user"></i>
+              <span>Thống kê</span>
             </router-link>
           </li>
         </ul>

@@ -20,6 +20,15 @@ import createproduct from "@/components/product/create";
 import editproduct from "@/components/product/edit";
 import viewproduct from "@/components/product/create";
 
+// Order
+import order from "../components/order/index";
+import orderDetail from "../components/order/view";
+
+// Revenue
+// Category
+import revenue from "../components/revenue/index";
+
+
 // Profile
 import Profile from "@/components/profile/index";
 Vue.use(Router);
@@ -91,6 +100,21 @@ export default new Router({
           path: "profile",
           name: "profile",
           component: Profile
+        },
+        {
+          path: "order",
+          name: "order",
+          component: order
+        },
+        {
+          path: "order/view/:id",
+          name: "orderDetail",
+          component: orderDetail
+        },
+        {
+          path: "revenue",
+          name: "revenue",
+          component: revenue
         }
       ]
     },
