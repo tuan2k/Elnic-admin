@@ -10,7 +10,7 @@
                   v-model="searchTerm"
                   class="form-control mx-1 my-2"
                   type="search"
-                  placeholder="Search"
+                  placeholder="Tìm tên người mua..."
                   aria-label="Search"
                 />
               </div>
@@ -19,7 +19,7 @@
                   <div id="my-posts" class="tab-pane fade active show">
                     <div class="col-xl-12 col-xxl-12 col-lg-12 col-md-12 col-sm-12">
                                                     <div>
-                                                        <h5 class="text-primary mb-4">Tọa dộ</h5>
+                                                        <h5 class="text-primary mb-4">Danh sách đơn hàng</h5>
                                                         <div class="card-body">
                                                             <div class="table-responsive">
                                                                 <table class="table header-border table-hover verticle-middle  table-bordered">

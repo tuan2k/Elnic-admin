@@ -29,8 +29,8 @@ export const store = new Vuex.Store({
           this.state.products = data;
         });
     },
-    getUsers() {
-      axios
+    async getUsers() {
+      await axios
         .get("https://elnic.herokuapp.com/api/user")
         .catch(() => Notification.error())
         .then(({ data }) => {

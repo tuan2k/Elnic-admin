@@ -4,7 +4,7 @@
       <div class="row page-titles mx-0">
         <div class="col-sm-6 p-md-0">
           <div class="welcome-text">
-            <h4>Add Product</h4>
+            <router-link to="/product"><h4>Danh sách sản phẩm</h4></router-link>
           </div>
         </div>
       </div>
@@ -13,14 +13,14 @@
         <div class="col-lg-12">
           <div class="card">
             <div class="card-header">
-              <h4 class="card-title">Product Details</h4>
+              <h4 class="card-title">Thêm sản phẩm</h4>
             </div>
             <div class="card-body">
               <b-form method="post" @submit.prevent="onSubmit">
                 <div class="row">
                   <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="form-group">
-                      <label class="form-label">Product Name</label>
+                      <label class="form-label">Tên sản phẩm</label>
                       <input
                         type="text"
                         class="form-control"
@@ -31,7 +31,7 @@
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="form-group">
-                      <label class="form-label">Category</label>
+                      <label class="form-label">Chọn doanh mục</label>
                       <b-form-select
                         type="text"
                         class="form-control"
@@ -45,7 +45,7 @@
 
                   <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="form-group">
-                      <label class="form-label">Product Description</label>
+                      <label class="form-label">Mô tả sản phẩm dài</label>
                       <textarea
                         class="form-control"
                         rows="5"
@@ -56,7 +56,7 @@
                   <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="form-group">
                       <label class="form-label"
-                        >Product Short Description</label
+                        >Mô tả ngắn</label
                       >
                       <textarea
                         class="form-control"
@@ -80,7 +80,7 @@
                   </div> -->
                   <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="form-group">
-                      <label class="form-label">Quantity</label>
+                      <label class="form-label">Số lượng</label>
                       <input
                         type="number"
                         class="form-control"
@@ -90,7 +90,7 @@
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="form-group">
-                      <label class="form-label">Product Price</label>
+                      <label class="form-label">Giá bán</label>
                       <input
                         type="number"
                         class="form-control"
@@ -101,7 +101,7 @@
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="form-group">
-                      <label class="form-label">Discount Price</label>
+                      <label class="form-label">Giá giảm</label>
                       <input
                         type="number"
                         class="form-control"
@@ -144,7 +144,7 @@
                   <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="form-group fallback w-100">
                       <label class="form-label d-block"
-                        >Product Photo Thumbnail
+                        >Ảnh đại diện
                       </label>
                       <input
                         type="file"
@@ -155,7 +155,7 @@
                   </div>
                   <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="form-group fallback w-100">
-                      <label class="form-label d-block">Product Images </label>
+                      <label class="form-label d-block">Hình ảnh </label>
                       <input
                         type="file"
                         accept="image/*"
@@ -167,15 +167,15 @@
                   </div>
                   <div class="col-lg-12 col-md-12 col-sm-12">
                     <button type="submit" class="btn btn-primary">
-                      Submit
+                      Lưu
                     </button>
-                    <b-button type="reset" variant="danger">Reset</b-button>
+                    <b-button type="reset" variant="danger">Quay lại</b-button>
                     <button
                       type="button"
                       class="btn btn-light"
                       @click="onCancel"
                     >
-                      Cancel
+                      Hủy bỏ
                     </button>
                     <b-spinner
                       variant="success"

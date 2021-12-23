@@ -1,10 +1,11 @@
 <template>
+  <div>
   <div class="content-body">
     <div class="container-fluid">
       <div class="row page-titles mx-0">
         <div class="col-sm-6 p-md-0">
           <div class="welcome-text">
-            <h4>Add Category</h4>
+            <h4>Thêm mới</h4>
           </div>
         </div>
       </div>
@@ -17,7 +18,7 @@
                 <div class="row">
                   <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="form-group">
-                      <label class="form-label">Category Name</label>
+                      <label class="form-label">Tên doanh mục</label>
                       <input
                         v-model="form.categoryName"
                         type="text"
@@ -28,7 +29,7 @@
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="form-group">
-                      <label class="form-label">Category Icon</label>
+                      <label class="form-label">Doanh mục Icon</label>
                       <input
                         v-model="form.categoryIcon"
                         type="text"
@@ -38,14 +39,14 @@
                   </div>
                   <div class="col-lg-12 col-md-12 col-sm-12">
                     <button type="submit" class="btn btn-primary">
-                      Submit
+                      Lưu
                     </button>
                     <button
                       type="button"
                       class="btn btn-light"
                       @click="onCancel"
                     >
-                      Cancel
+                      Hủy bỏ
                     </button>
                     <b-spinner
                       variant="success"
@@ -60,6 +61,7 @@
         </div>
       </div>
     </div>
+  </div>
   </div>
 </template>
 <script type="text/javascript">
@@ -119,3 +121,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+.content-body{
+  height: 1000px;
+}
+</style>

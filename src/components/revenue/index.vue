@@ -1,10 +1,11 @@
 
 <template>
+  <div>
   <div class="content-body">
       <div class="container-fluid">
         <div class="form-group">
         <label><strong>Chọn năm: </strong></label>
-        <select v-model="nam" v-on:change="selectYear()">
+        <select v-model="nam" v-on:change="selectYear()" class="form-control">
             <option :value="y" v-for="y in year" :key="y">{{ y }}</option>
         </select>
         </div>
@@ -21,6 +22,7 @@
         </div>
       </div>
   </div>
+  </div>
 </template>
 <script type="text/javascript">
 import axios from "axios";
@@ -31,6 +33,7 @@ export default {
     if (!User.loggedIn()) {
       this.$router.push({ name: "login" });
     }
+    this.$store.dispatch("getProducts");
     this.allOrder();
     this.products = this.$store.state.products;
     console.log(this.products);
@@ -187,21 +190,35 @@ export default {
           
         } else {
            let obj = [0,0];
+           this.chart = [];
            for (let j=0;j<this.orders.length;j++){
               let dtt = new Date(this.orders[j].createdAt);
               if (this.nam === dtt.getFullYear()) {
-                  for (let k=0;k < this.orders[j].productList.length; k++){
+                  for (let k=0;k<this.orders[j].productList.length; k++){
                       obj[0] = this.orders[j].productList[k]._id;
                       obj[1] = this.orders[j].productList[k].userQuantity;
-                      this.chart.push(obj);
+                      if (this.chart.length === 0){
+                        this.chart.push(obj);
+                      } else {
+                         this.chart.push(obj);
+                        //   for (let h=0;h<this.chart.length;h++){
+                        //       if (this.chart[h][0] === obj[0]){
+                        //           console.log(obj[1]+"-"+this.chart[h][0]);
+                        //           console.log("trung");
+                        //           this.chart[h][1] += obj[1];
+                        //       } else {
+                        //           this.chart.push(obj);
+                        //       }
+                        //   }
+                      }
                       obj = [0,0];
                   }
               }
            }
            for (let g=0;g<this.chart.length;g++){
                for (let u=0;u<this.products.length;u++){
-                   console.log(this.chart[g][0]);
                    if (this.products[u]._id == this.chart[g][0]) {
+                       console.log(this.chart[g][0]);
                        this.chart[g][0] = this.products[u].productName;
                    }
                }
@@ -215,5 +232,8 @@ export default {
 <style scoped>
 .chart {
   margin-left:300px;
+}
+.content-body{
+    height: 1000px;
 }
 </style>
