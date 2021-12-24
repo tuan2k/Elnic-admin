@@ -4,14 +4,14 @@
                 <div class="row page-titles mx-0">
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
-                            <h4>Add Product</h4>
+                            <h4>Thêm sản phẩm</h4>
                         </div>
                     </div>
                     <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                            <li class="breadcrumb-item active"><a href="javascript:void(0);">Products</a></li>
-                            <li class="breadcrumb-item active"><a href="javascript:void(0);">Add Product</a></li>
+                            <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+                            <li class="breadcrumb-item active"><a href="javascript:void(0);">Danh sách sản phẩm</a></li>
+                            <li class="breadcrumb-item active"><a href="javascript:void(0);">Thêm mới</a></li>
                         </ol>
                     </div>
                 </div>
@@ -20,74 +20,38 @@
 					<div class="col-lg-12">
 						<div class="card">
 							<div class="card-header">
-								<h4 class="card-title">Courses Details</h4>
+								<h4 class="card-title">Thêm người dùng</h4>
 							</div>
 							<div class="card-body">
-								<form action="#" method="post">
+								<form @submit.prevent="saveUser()">
 									<div class="row">
 										<div class="col-lg-6 col-md-6 col-sm-12">
 											<div class="form-group">
-												<label class="form-label">Course Name</label>
-												<input type="text" class="form-control">
+												<label class="form-label">Tên người dùng</label>
+												<input v-model="form.fullname" type="text" class="form-control">
 											</div>
 										</div>
 										<div class="col-lg-6 col-md-6 col-sm-12">
 											<div class="form-group">
-												<label class="form-label">Course Code</label>
-												<input type="text" class="form-control">
-											</div>
-										</div>
-										<div class="col-lg-12 col-md-12 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Course Details</label>
-												<textarea class="form-control" rows="5"></textarea>
+												<label class="form-label">Tên đăng nhập</label>
+												<input v-model="form.username" type="text" class="form-control" required>
 											</div>
 										</div>
 										<div class="col-lg-6 col-md-6 col-sm-12">
 											<div class="form-group">
-												<label class="form-label">Start Form</label>
-												<input name="datepicker" class="datepicker-default form-control" id="datepicker">
+												<label class="form-label">Email</label>
+												<input v-model="form.email" class="form-control" type="email" required>
 											</div>
 										</div>
 										<div class="col-lg-6 col-md-6 col-sm-12">
 											<div class="form-group">
-												<label class="form-label">Course Duration</label>
-												<input type="text" class="form-control">
-											</div>
-										</div>
-										<div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Course Price</label>
-												<input type="text" class="form-control">
-											</div>
-										</div>
-										<div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Professor Name</label>
-												<input type="text" class="form-control">
-											</div>
-										</div>
-										<div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Maximum Students</label>
-												<input type="text" class="form-control">
-											</div>
-										</div>
-										<div class="col-lg-6 col-md-6 col-sm-12">
-											<div class="form-group">
-												<label class="form-label">Contact Number</label>
-												<input type="text" class="form-control">
-											</div>
-										</div>
-										<div class="col-lg-12 col-md-12 col-sm-12">
-											<div class="form-group fallback w-100">
-												<label class="form-label d-block">Course Photo</label>
-												<input type="file" class="dropify" data-default-file="">
+												<label class="form-label">Mật khẩu</label>
+												<input type="password" v-model="form.password" name="datepicker" required class="datepicker-default form-control" id="datepicker">
 											</div>
 										</div>
 										<div class="col-lg-12 col-md-12 col-sm-12">
 											<button type="submit" class="btn btn-primary">Submit</button>
-											<button type="submit" class="btn btn-light">Cencel</button>
+											<button type="submit" class="btn btn-light">Cancel</button>
 										</div>
 									</div>
 								</form>
@@ -108,17 +72,14 @@ export default {
         }
         this.allProduct();
     },
-    computed:{
-        filtersearch(){
-            return this.products.filter(product => {
-                return product.productName.match(this.searchTerm);
-            })
-        }
-    },
     data() {
         return {
-            products: [],
-            searchTerm: ''
+			form: {
+				fullname: '',
+				username: '',
+				email: '',
+				password: '',
+			}
         }
     },
     methods: {
@@ -126,7 +87,23 @@ export default {
             axios.get('https://elnic-api.herokuapp.com/api/product')
                 .then( ({data}) => {(this.products = data);})
                 .catch()
-        }
+        },
+		saveUser(){
+			axios.post('https://elnic.herokuapp.com/api/auth/signup',this.form)
+                .then( ({data}) => { console.log(data)
+					this.$router.push({ name: "user" });
+					this.$swal({
+					title: "Thêm mới người dùng thành công!!!",
+					icon: "success",
+					toast: true,
+					position: "top-end",
+					showConfirmButton: false,
+					timer: 2500,
+					timerProgressBar: true
+				});
+				})
+                .catch()
+		}
     }
 
 }

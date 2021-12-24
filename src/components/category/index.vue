@@ -11,14 +11,14 @@
                     to="create-category"
                     class="btn btn-primary mx-2 my-2"
                     style="width: 130px"
-                    >Add Category
+                    >Thêm mới
                   </router-link>
                 </span>
                 <input
                   v-model="searchTerm"
                   class="form-control mx-1 my-2"
                   type="search"
-                  placeholder="Search"
+                  placeholder="Tìm kiếm..."
                   aria-label="Search"
                 />
               </div>
@@ -42,12 +42,12 @@
                               params: { id: row.item._id }
                             }"
                             class="btn btn-sm btn-primary"
-                            ><font color="white">Edit</font>
+                            ><font color="white">Sửa</font>
                           </router-link>
                           <a
                             @click="deleteCategory(row.item._id)"
                             class="btn btn-sm btn-danger"
-                            ><font color="white">Delete</font></a
+                            ><font color="white">Xóa</font></a
                           >
                         </template>
                       </b-table>

@@ -13,14 +13,14 @@
                     class="btn btn-primary"
                     style="width: 130px"
                   >
-                    Add Product
+                    Thêm mới
                   </router-link>
                 </span>
                 <input
                   v-model="searchTerm"
                   class="form-control ml-4"
                   type="search"
-                  placeholder="Find name product. Example: Laptop"
+                  placeholder="Tìm tên sản phẩm. ví dụ: Laptop"
                   aria-label="Search"
                 />
               </div>

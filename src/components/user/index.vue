@@ -6,22 +6,22 @@
           <div class="col-xl-12 col-lg-12 col-xxl-12 col-md-12">
             <div class="card profile-tab">
               <div class="card-header">
-                <span
-                  ><router-link to="create-user" class="btn btn-primary"
-                    >Add User</router-link
-                  ></span
-                >
                 <input
                   v-model="searchTerm"
                   class="form-control"
                   type="search"
-                  placeholder="Search"
+                  placeholder="Tìm tên người dùng..."
                   aria-label="Search"
                 />
               </div>
               <div class="card-body custom-tab-1">
                 <div class="tab-content">
                   <div id="my-posts" class="tab-pane fade active show">
+                    <span
+                      ><router-link to="create-user" class="btn btn-primary btn-sm form-group"
+                        >Thêm mới</router-link
+                      ></span
+                    >
                     <div class="table-responsive">
                       <b-table
                         class="table table-responsive-md"
@@ -38,12 +38,12 @@
                               params: { id: row.item._id }
                             }"
                             class="btn btn-sm btn-primary"
-                            ><font color="white">Edit</font></router-link
+                            ><font color="white">Sửa</font></router-link
                           >
                           <a
                             @click="deleteUser(row.item._id)"
                             class="btn btn-sm btn-danger"
-                            ><font color="white">Delete</font></a
+                            ><font color="white">Xóa</font></a
                           >
                         </template>
                       </b-table>
