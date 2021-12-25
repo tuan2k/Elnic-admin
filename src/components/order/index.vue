@@ -33,7 +33,6 @@
                                   <th><strong>Tên người mua</strong></th>
                                   <th><strong>Email</strong></th>
                                   <th><strong>Số điện thoại</strong></th>
-                                  <th><strong>Tổng tiền</strong></th>
                                   <th><strong>Chức năng</strong></th>
                                 </tr>
                               </thead>
@@ -49,7 +48,6 @@
                                   </td>
                                   <td>{{ td.email }}</td>
                                   <td>{{ td.phone }}</td>
-                                  <td>10</td>
                                   <td>
                                     <router-link
                                       :to="{
@@ -183,6 +181,7 @@ export default {
     this.allOrder();
     this.users = this.$store.state.users;
     this.products = this.$store.state.products;
+    this.rows = this.users.length;
     console.log(this.users);
   },
   computed: {
@@ -267,7 +266,7 @@ export default {
 
 <style scoped>
 .content-body {
-  height: 900px;
+  height: 1000px;
 }
 /* .heo {
   margin-top: 20px;
