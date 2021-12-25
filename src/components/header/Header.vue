@@ -19,6 +19,7 @@
 
             <ul class="navbar-nav header-right">
               <li class="nav-item dropdown header-profile">
+                <p class="text-primary" style="margin-top:10px;">{{ this.username }}</p>
                 <a
                   class="nav-link"
                   href="#"
@@ -85,6 +86,14 @@
 <script>
 export default {
   name: "Header",
+  created(){
+      this.username = localStorage.getItem("user")
+  },
+  data(){
+    return {
+        username: '',
+    }
+  },
   methods: {
     Logout() {
       localStorage.removeItem("token");

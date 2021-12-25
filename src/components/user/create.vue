@@ -4,15 +4,8 @@
                 <div class="row page-titles mx-0">
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
-                            <h4>Thêm sản phẩm</h4>
+                            <router-link to="/user"><h4>Danh sách người dùng</h4></router-link>
                         </div>
-                    </div>
-                    <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
-                            <li class="breadcrumb-item active"><a href="javascript:void(0);">Danh sách sản phẩm</a></li>
-                            <li class="breadcrumb-item active"><a href="javascript:void(0);">Thêm mới</a></li>
-                        </ol>
                     </div>
                 </div>
 				
@@ -79,6 +72,9 @@ export default {
 				username: '',
 				email: '',
 				password: '',
+				roles: [
+					"admin"
+				]
 			}
         }
     },
@@ -89,8 +85,10 @@ export default {
                 .catch()
         },
 		saveUser(){
+			console.log(this.form);
 			axios.post('https://elnic.herokuapp.com/api/auth/signup',this.form)
                 .then( ({data}) => { console.log(data)
+					this.$store.dispatch("getUsers");
 					this.$router.push({ name: "user" });
 					this.$swal({
 					title: "Thêm mới người dùng thành công!!!",

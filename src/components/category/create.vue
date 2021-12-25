@@ -90,7 +90,7 @@ export default {
         .post("https://elnic-api.herokuapp.com/api/categories", this.form)
         .then(() => {
           this.$swal({
-            title: "Add Category Successfully",
+            title: "Thêm doanh mục thành công",
             icon: "success",
             toast: true,
             position: "top-end",

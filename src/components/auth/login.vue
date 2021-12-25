@@ -9,10 +9,10 @@
                 <div class="row no-gutters">
                   <div class="col-xl-12">
                     <div class="auth-form">
-                      <h4 class="text-center mb-4">Sign in Admin ELNIC</h4>
+                      <h4 class="text-center mb-4">Đăng nhập Admin ELNIC</h4>
                       <form @submit.prevent="login" class="user">
                         <div class="form-group">
-                          <label><strong>Username</strong></label>
+                          <label><strong>Tên đăng nhập</strong></label>
                           <input
                             v-model="form.username"
                             class="form-control"
@@ -21,7 +21,7 @@
                           <!-- <small class="text-danger" v-if="errors.username">{{ errors.username[0] }}</small> -->
                         </div>
                         <div class="form-group">
-                          <label><strong>Password</strong></label>
+                          <label><strong>Mật khẩu</strong></label>
                           <input
                             type="password"
                             v-model="form.password"
@@ -44,14 +44,9 @@
                                 class="custom-control-label"
                                 for="basic_checkbox_1"
                               >
-                                Remember me
+                              Nhớ mật khẩu
                               </label>
                             </div>
-                          </div>
-                          <div class="form-group">
-                            <a href="#" @click="onClickForgotPassword">
-                              Forgot Password?
-                            </a>
                           </div>
                         </div>
                         <div class="text-center">
@@ -59,7 +54,7 @@
                             type="submit"
                             class="btn btn-primary btn-block"
                           >
-                            Login
+                            Đăng nhập
                           </button>
                         </div>
                       </form>
@@ -109,10 +104,21 @@ export default {
       axios
         .post("https://elnic.herokuapp.com/api/auth/signin", this.form)
         .then(res => {
-          // console.log(res);
+          console.log(res);
+          if (res.data.roles[0] === 'ROLE_USER' && res.data.roles.length === 1){
+              this.$swal({
+                title: "Tên đăng nhập hoặc mật khẩu không đúng!!!",
+                icon: "error",
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 2500,
+                timerProgressBar: true
+              });
+          } else {
           User.responseAfterLogin(res);
           this.$swal({
-            title: "Signed in successfully",
+            title: "Đăng nhập thành công!!!",
             icon: "success",
             toast: true,
             position: "top-end",
@@ -121,12 +127,13 @@ export default {
             timerProgressBar: true
           });
           this.$router.push({ name: "home" });
+          }
         })
         .catch(error => {
           this.errors = error.response;
           // console.log(this.errors);
           this.$swal({
-            title: "Invalid Email or Password",
+            title: "Tên đăng nhập hoặc mật khẩu không đúng!!!",
             icon: "error",
             toast: true,
             position: "top-end",

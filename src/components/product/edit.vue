@@ -4,7 +4,7 @@
       <div class="row page-titles mx-0">
         <div class="col-sm-6 p-md-0">
           <div class="welcome-text">
-            <h4>Edit Product</h4>
+            <router-link to="/product"><h4>Danh sách sản phẩm</h4></router-link>
           </div>
         </div>
       </div>
@@ -13,14 +13,14 @@
         <div class="col-lg-12">
           <div class="card">
             <div class="card-header">
-              <h4 class="card-title">Product Details</h4>
+              <h4 class="card-title">Chỉnh sửa sản phẩm</h4>
             </div>
             <div class="card-body">
-              <b-form method="post" @submit.prevent="onSubmit">
+              <b-form method="post" @submit.prevent="onSubmit" enctype="multipart/form-data">
                 <div class="row">
                   <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="form-group">
-                      <label class="form-label">Product Name</label>
+                      <label class="form-label">Tên sản phẩm</label>
                       <input
                         type="text"
                         class="form-control"
@@ -31,7 +31,7 @@
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="form-group">
-                      <label class="form-label">Category</label>
+                      <label class="form-label">Chọn doanh mục</label>
                       <b-form-select
                         type="text"
                         class="form-control"
@@ -45,7 +45,7 @@
 
                   <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="form-group">
-                      <label class="form-label">Product Description</label>
+                      <label class="form-label">Thông tin sản phẩm</label>
                       <textarea
                         class="form-control"
                         rows="5"
@@ -56,7 +56,7 @@
                   <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="form-group">
                       <label class="form-label"
-                        >Product Short Description</label
+                        >Thông tin ngắn</label
                       >
                       <textarea
                         class="form-control"
@@ -66,21 +66,9 @@
                       ></textarea>
                     </div>
                   </div>
-                  <!-- <div class="col-lg-6 col-md-6 col-sm-12">
-                    <div class="form-group">
-                      <label class="form-label">Start Form</label>
-                      <input
-                        name="datepicker"
-                        class="datepicker-default form-control"
-                        id="datepicker"
-                        type="datetime"
-                        v-model="form.productName"
-                      />
-                    </div>
-                  </div> -->
                   <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="form-group">
-                      <label class="form-label">Quantity</label>
+                      <label class="form-label">Số lượng</label>
                       <input
                         type="number"
                         class="form-control"
@@ -90,7 +78,7 @@
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="form-group">
-                      <label class="form-label">Product Price</label>
+                      <label class="form-label">Giá bán sản phẩm</label>
                       <input
                         type="number"
                         class="form-control"
@@ -101,7 +89,7 @@
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="form-group">
-                      <label class="form-label">Discount Price</label>
+                      <label class="form-label">Giá giảm giá</label>
                       <input
                         type="number"
                         class="form-control"
@@ -110,16 +98,6 @@
                       />
                     </div>
                   </div>
-                  <!-- <div class="col-lg-6 col-md-6 col-sm-12">
-                    <div class="form-group">
-                      <label class="form-label">Hot Deal</label>
-                      <input
-                        type="checkbox"
-                        class="form-control"
-                        v-model="form.hotDeal"
-                      />
-                    </div>
-                  </div> -->
                   <div class="col-lg-6 col-md-6 col-sm-12">
                     <b-form-checkbox v-model="form.featured">
                       Feature
@@ -131,20 +109,10 @@
                       Hot Deal
                     </b-form-checkbox>
                   </div>
-                  <!-- <div class="col-lg-6 col-md-6 col-sm-12">
-                    <div class="form-group">
-                      <label class="form-label">Status</label>
-                      <input
-                        type="checkbox"
-                        class="form-control"
-                        v-model="form.status"
-                      />
-                    </div>
-                  </div> -->
                   <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="form-group fallback w-100">
                       <label class="form-label d-block"
-                        >Product Photo Thumbnail
+                        > Ảnh đại diện
                       </label>
                       <input
                         type="file"
@@ -155,7 +123,7 @@
                   </div>
                   <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="form-group fallback w-100">
-                      <label class="form-label d-block">Product Images </label>
+                      <label class="form-label d-block">Hình ảnh sản phẩm </label>
                       <input
                         type="file"
                         class="dropify"
@@ -166,15 +134,14 @@
                   </div>
                   <div class="col-lg-12 col-md-12 col-sm-12">
                     <button type="submit" class="btn btn-primary">
-                      Submit
+                      Lưu thay đổi
                     </button>
-                    <!-- <b-button type="reset" variant="danger">Reset</b-button> -->
                     <button
                       type="button"
                       class="btn btn-light"
                       @click="onCancel"
                     >
-                      Cancel
+                      Hủy bỏ
                     </button>
                   </div>
                 </div>
@@ -212,6 +179,7 @@ export default {
   data() {
     return {
       form: {
+        _id: '',
         productName: "",
         productQty: 0,
         discountPrice: 0,
@@ -225,11 +193,10 @@ export default {
         productThambnail: "",
         productImgs: []
       },
-      id: '',
       nameCategory: "",
       options:{
-                url: '',
-                type: "PUT",
+                url: 'https://elnic-api.herokuapp.com/api/product/update',
+                type: "POST",
                 processData: false, 
                 contentType: false 
       },
@@ -239,7 +206,7 @@ export default {
     let id = this.$route.params.id;
     // getProduct(id);
     axios
-      .get("https://elnic-api.herokuapp.com/api/product/" + id)
+      .get("https://elnic-api.herokuapp.com/api/product/"+id)
       .catch(error => {
         // console.log(error);
         this.$swal({
@@ -274,9 +241,8 @@ export default {
     },
     onSubmit() {
       let id = this.$route.params.id;
-      this.options.url = 'https://elnic-api.herokuapp.com/api/product/'+ id;
       let formData = new FormData();
-      formData.append("_id", id);
+      formData.append("id", id);
       formData.append("productName", this.form.productName);
       formData.append("productQty", this.form.productQty);
       formData.append("discountPrice", this.form.discountPrice);
@@ -287,9 +253,12 @@ export default {
       formData.append("featured", this.form.featured);
       formData.append("status", this.form.status);
       formData.append("categoriesId", this.form.categoriesId);
-      formData.append("productThambnail", this.form.productThambnail);
-      for (let i=0;i<this.form.productImgs.length;i++){
-           formData.append("productImgs", this.form.productImgs[i]);
+      // formData.append("productThambnail", this.form.productThambnail);
+      // for (let i=0;i<this.form.productImgs.length;i++){
+      //      formData.append("productImgs", this.form.productImgs[i]);
+      // }
+      for (var pair of formData.entries()) {
+          console.log(pair[0]+ ', ' + pair[1]); 
       }
       $.ajax(Object.assign({}, this.options, {data: formData}))
             .then( (res) => {

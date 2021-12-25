@@ -3,59 +3,82 @@
     <div class="content-body">
       <!-- row -->
       <div class="container-fluid">
+        <div class="row page-titles mx-0">
+          <div class="col-sm-6 p-md-0">
+            <div class="welcome-text">
+                <router-link to="/user"><h4>Danh sách người dùng</h4></router-link>
+            </div>
+          </div>
+        </div>
+
         <div class="row">
-          <div class="col-xl-12 col-lg-12 col-xxl-12 col-md-12">
-            <div class="card profile-tab">
+          <div class="col-xl-12 col-xxl-12 col-sm-12">
+            <div class="card">
               <div class="card-header">
-                <span
-                  ><router-link to="/admin/create-user" class="btn btn-primary"
-                    >Add User</router-link
-                  ></span
-                >
-                <input
-                  class="form-control"
-                  type="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                />
+                <h5 class="card-title">Cập nhật người dùng</h5>
               </div>
-              <div class="card-body custom-tab-1">
-                <div class="tab-content">
-                  <div id="my-posts" class="tab-pane fade active show">
-                    <div class="table-responsive">
-                      <table class="table table-responsive-md">
-                        <thead>
-                          <tr>
-                            <th>User Name</th>
-                            <th>Role Name</th>
-                            <th>Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr v-for="user in users" :key="user._id">
-                            <td>{{ user.username }}</td>
-                            <th>{{ user.email }}</th>
-                            <td>
-                              <router-link
-                                :to="{
-                                  name: 'edit-user',
-                                  params: { id: user._id }
-                                }"
-                                class="btn btn-sm btn-primary"
-                                ><font color="white">Edit</font></router-link
-                              >
-                              <a
-                                @click="deleteUser(user.id)"
-                                class="btn btn-sm btn-danger"
-                                ><font color="white">Delete</font></a
-                              >
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+              <div class="card-body">
+                <form @submit.prevent="userUpdate">
+                  <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                      <div class="form-group">
+                        <label class="form-label">Tên người dùng</label>
+                        <input
+                          type="text"
+                          v-model="form.fullName"
+                          class="form-control"
+                        />
+                      </div>
+                    </div>
+                     <div class="col-lg-6 col-md-6 col-sm-12">
+                      <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input
+                          type="email"
+                          v-model="form.email"
+                          class="form-control"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                      <div class="form-group">
+                        <label class="form-label">Tên đăng nhập</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="form.username"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                      <div class="form-group">
+                        <label class="form-label">Mật khẩu</label>
+                        <input
+                          type="password"
+                          class="form-control"
+                          v-model="form.password"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                      <button type="submit" class="btn btn-primary">
+                        Lưu thay đổi
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-danger"
+                        @click="onCancel"
+                      >
+                        Hủy bỏ
+                      </button>
+                      <b-spinner
+                        variant="success"
+                        label="Spinning"
+                        v-if="loading"
+                      ></b-spinner>
                     </div>
                   </div>
-                </div>
+                </form>
               </div>
             </div>
           </div>
@@ -68,67 +91,70 @@
 <script type="text/javascript">
 import axios from "axios";
 export default {
-  created() {
+  name: "edit-user",
+  async created() {
     if (!User.loggedIn()) {
       this.$router.push({ name: "login" });
     }
-    this.allUser();
-  },
-  computed: {
-    // filtersearch(){
-    //     return this.users.filter(user => {
-    //         return user.name.match(this.searchTerm);
-    //     })
-    // }
+    let id = this.$route.params.id;
+    axios
+      .get("https://elnic.herokuapp.com/api/user/getByIdOrUsername?id="+id,
+      )
+      .then(({ data }) => {
+        this.form = data;
+        console.log(this.form);
+      })
+      .catch(error => {
+        // console.log(error);
+        this.$swal({
+          title: "Error",
+          text: "Something get wrong!",
+          icon: "error",
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 2500,
+          timerProgressBar: true
+        });
+      });
   },
   data() {
     return {
-      users: [],
-      searchTerm: ""
+      form: {
+				fullname: '',
+        fullName: '',
+				username: '',
+				email: '',
+				password: '',
+			},
+      errors: {},
+      loading: false
     };
   },
   methods: {
-    allUser() {
+    userUpdate() {
+      this.loading = true;
+      let id = this.$route.params.id;
+      this.form.fullName = this.form.fullname;
       axios
-        .get("https://elnic.herokuapp.com/api/getUser")
-        .then(({ data }) => {
-          this.users = data.data;
+        .put("https://elnic.herokuapp.com/api/user/" + id, this.form)
+        .then(() => {
+          this.loading = false;
+          this.$router.push({ name: "user" });
+          this.$swal({
+            title: "Cập nhật người dùng thành công!!!",
+            icon: "success",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+          });
         })
-        .catch();
+        .catch(error => (this.errors = error.response.data.errors));
     },
-    deleteUser(id) {
-      this.$swal({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
-      }).then(result => {
-        if (result.isConfirmed) {
-          axios
-            .delete("/api/user/" + id)
-            .then(() => {
-              this.users = this.users.filter(user => {
-                return user.id != id;
-              });
-              this.$swal({
-                title: "Deleted",
-                text: "Delete successfully!",
-                icon: "success",
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 2500,
-                timerProgressBar: true
-              });
-            })
-            .catch(() => {
-              this.$router.push({ name: "category" });
-            });
-        }
-      });
+    onCancel() {
+      this.$router.push({ name: "user" });
     }
   }
 };

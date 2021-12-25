@@ -38,13 +38,12 @@
                               params: { id: row.item._id }
                             }"
                             class="btn btn-sm btn-primary"
-                            ><font color="white">Sửa</font></router-link
-                          >
-                          <a
-                            @click="deleteUser(row.item._id)"
-                            class="btn btn-sm btn-danger"
-                            ><font color="white">Xóa</font></a
-                          >
+                            >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+                              <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/>
+                            </svg>
+                            <font color="white">Sửa</font>
+                          </router-link>
                         </template>
                       </b-table>
                     </div>
@@ -56,10 +55,10 @@
                   v-model="currentPage"
                   :total-rows="rows"
                   :per-page="perPage"
-                  first-text="First"
-                  prev-text="Prev"
-                  next-text="Next"
-                  last-text="Last"
+                  first-text="Trang đầu"
+                  prev-text="<"
+                  next-text=">"
+                  last-text="Trang cuối"
                 ></b-pagination>
               </div>
             </div>
@@ -77,11 +76,21 @@ export default {
     if (!User.loggedIn()) {
       this.$router.push({ name: "login" });
     }
-    this.$store.dispatch("getUsers");
-    this.users = this.$store.state.users;
-    this.rows = this.users.length;
+    axios
+        .get("https://elnic.herokuapp.com/api/user")
+        .catch(() => Notification.error())
+        .then(({ data }) => {
+          this.users = data;
+          this.rows = this.users.length;
+          console.log(this.users);
+        });
   },
   computed: {
+    filtersearch() {
+      return this.users.filter(u => {
+        return u.username.match(this.searchTerm);
+      });
+    },
     userData() {
       const dataUser = this.users.filter(obj => {
         var checkRole = false;
@@ -92,11 +101,6 @@ export default {
       });
       return dataUser;
     },
-    // filtersearch() {
-    //   return this.users.filter(user => {
-    //     return user.username.match(this.searchTerm);
-    //   });
-    //}
   },
   mounted() {
     this.$store.dispatch("getUsers");
@@ -108,20 +112,26 @@ export default {
       rows: 0,
       perPage: 10,
       currentPage: 1,
-      fields: ["username", "email", "phone"]
+      fields: [
+        { key: "username", label: "Tên đăng nhập"},
+        { key: "email", label: "Email"},
+        { key: "roles[0].name", label: "Vai trò"},
+        { key: "phone",label: "Số điện thoại"},
+        { key: "actions", label: "Chức năng" }
+      ]
     };
   },
-  mounted() {},
   methods: {
     deleteUser(id) {
       this.$swal({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        title: "Bạn có chắc muốn xóa?",
+        text: "Bạn sẽ không thể lấy lại!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
+        candelButtonText: "Hủy bỏ",
+        confirmButtonText: "Đồng ý,Xóa!"
       }).then(result => {
         if (result.isConfirmed) {
           axios
@@ -131,8 +141,8 @@ export default {
                 return user.id != id;
               });
               this.$swal({
-                title: "Deleted",
-                text: "Delete successfully!",
+                title: "Xóa",
+                text: "Xóa người dùng thành công!",
                 icon: "success",
                 toast: true,
                 position: "top-end",
@@ -142,7 +152,7 @@ export default {
               });
             })
             .catch(() => {
-              this.$router.push({ name: "category" });
+              this.$router.push({ name: "user" });
             });
         }
       });
@@ -151,4 +161,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.content-body {
+  height: 900px;
+}
+</style>

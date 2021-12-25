@@ -270,7 +270,7 @@ export default {
           this.loading = false;
           this.$router.push({ name: "product" });
           this.$swal({
-            title: "Create product Successfully",
+            title: "Thêm sản phẩm thành công!!!",
             icon: "success",
             toast: true,
             position: "top-end",

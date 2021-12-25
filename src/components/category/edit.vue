@@ -6,7 +6,7 @@
         <div class="row page-titles mx-0">
           <div class="col-sm-6 p-md-0">
             <div class="welcome-text">
-              <h4>Update Category</h4>
+                <router-link to="/category"><h4>Danh sách doanh mục</h4></router-link>
             </div>
           </div>
         </div>
@@ -15,14 +15,14 @@
           <div class="col-xl-12 col-xxl-12 col-sm-12">
             <div class="card">
               <div class="card-header">
-                <h5 class="card-title">Category Info</h5>
+                <h5 class="card-title">Cập nhật doanh mục</h5>
               </div>
               <div class="card-body">
                 <form @submit.prevent="categoryUpdate">
                   <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-12">
                       <div class="form-group">
-                        <label class="form-label">Category Name</label>
+                        <label class="form-label">Tên doanh mục</label>
                         <input
                           type="text"
                           v-model="form.categoryName"
@@ -32,7 +32,7 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
                       <div class="form-group">
-                        <label class="form-label">Icon Name</label>
+                        <label class="form-label">Tên Icon</label>
                         <input
                           type="text"
                           class="form-control"
@@ -42,14 +42,14 @@
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12">
                       <button type="submit" class="btn btn-primary">
-                        Submit
+                        Lưu
                       </button>
                       <button
                         type="button"
-                        class="btn btn-light"
+                        class="btn btn-danger"
                         @click="onCancel"
                       >
-                        Cancel
+                        Hủy bỏ
                       </button>
                       <b-spinner
                         variant="success"
@@ -118,7 +118,7 @@ export default {
           this.loading = false;
           this.$router.push({ name: "category" });
           this.$swal({
-            title: "Update Category Successfully",
+            title: "Cập nhật doanh mục thành công!!!",
             icon: "success",
             toast: true,
             position: "top-end",
@@ -130,7 +130,7 @@ export default {
         .catch(error => (this.errors = error.response.data.errors));
     },
     onCancel() {
-      this.$router.push({ name: "product" });
+      this.$router.push({ name: "category" });
     }
   }
 };

@@ -42,13 +42,21 @@
                               params: { id: row.item._id }
                             }"
                             class="btn btn-sm btn-primary"
-                            ><font color="white">Sửa</font>
+                            >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+                              <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/>
+                            </svg>
+                            <font color="white">Sửa</font>
                           </router-link>
-                          <a
+                          <span
                             @click="deleteCategory(row.item._id)"
                             class="btn btn-sm btn-danger"
-                            ><font color="white">Xóa</font></a
-                          >
+                            ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                          </svg>
+                            <font color="white">Xóa</font>
+                          </span>
                         </template>
                       </b-table>
                     </div>
@@ -63,10 +71,10 @@
             v-model="currentPage"
             :total-rows="rows"
             :per-page="perPage"
-            first-text="First"
-            prev-text="Prev"
-            next-text="Next"
-            last-text="Last"
+            first-text="Trang đầu"
+            prev-text="<"
+            next-text=">"
+            last-text="Trang cuối"
           ></b-pagination>
         </div>
       </div>
@@ -82,6 +90,13 @@ export default {
     if (!User.loggedIn()) {
       this.$router.push({ name: "login" });
     }
+    axios
+        .get("https://elnic-api.herokuapp.com/api/categories")
+        .catch(() => Notification.error())
+        .then(({ data }) => {
+          this.categories = data;
+          this.rows = this.categories.length;
+        });
   },
   computed: {
     filtersearch() {
@@ -89,16 +104,6 @@ export default {
         return category.categoryName.match(this.searchTerm);
       });
     },
-    categories: {
-      get() {
-        return this.$store.state.categories;
-      }
-    },
-    rows: {
-      get() {
-        return this.categories.length;
-      }
-    }
   },
   mounted() {
     this.$store.dispatch("getCategories");
@@ -107,34 +112,36 @@ export default {
     return {
       // categories: [],
       items: [],
-      // rows: 0,
+      rows: 0,
       perPage: 5,
+      categories: [],
       currentPage: 1,
-      fields: ["categoryName", { key: "actions", label: "Actions" }],
+      fields: [ { key:"categoryName",label:"Tên doanh mục"}, { key: "actions", label: "Chức năng" }],
       searchTerm: ""
     };
   },
   methods: {
     deleteCategory(id) {
       this.$swal({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        title: "Bạn có chắc muốn xóa?",
+        text: "Bạn sẽ không thể lấy lại dữ liệu!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
+         cancelButtonText: "Hủy bỏ",
+        confirmButtonText: "Đồng ý, Xóa!"
       }).then(result => {
         if (result.isConfirmed) {
           axios
             .delete("https://elnic-api.herokuapp.com/api/categories/" + id)
             .then(() => {
-              this.categories = this.categories.filter(cat => {
-                return cat._id != id;
-              });
-              this.$swal({
-                title: "Deleted",
-                text: "Delete successfully!",
+                this.categories = this.categories.filter( cat => {
+                  return cat._id !== id;
+                })
+                this.$swal({
+                title: "Xóa",
+                text: "Xóa dữ liệu thành công!",
                 icon: "success",
                 toast: true,
                 position: "top-end",
@@ -142,11 +149,11 @@ export default {
                 timer: 2500,
                 timerProgressBar: true
               });
+              
             })
             .catch(() => {
               this.$router.push({ name: "category" });
             });
-          // this.$swal("Deleted!", "Delete successfully", "success");
         }
       });
     }
