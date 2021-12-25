@@ -33,9 +33,14 @@ export default {
     if (!User.loggedIn()) {
       this.$router.push({ name: "login" });
     }
-    this.$store.dispatch("getProducts");
     this.allOrder();
-    this.products = this.$store.state.products;
+    axios
+        .get("https://elnic-api.herokuapp.com/api/product")
+        .catch(() => Notification.error())
+        .then(({ data }) => {
+          this.state.products = data;
+          this.products = data;
+        });
     console.log(this.products);
   },
    mounted() {
