@@ -33,6 +33,7 @@
                       <input
                         v-model="form.categoryIcon"
                         type="text"
+                        required
                         class="form-control"
                       />
                     </div>
