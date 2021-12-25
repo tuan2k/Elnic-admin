@@ -16,7 +16,11 @@
               <h4 class="card-title">Chỉnh sửa sản phẩm</h4>
             </div>
             <div class="card-body">
-              <b-form method="post" @submit.prevent="onSubmit" enctype="multipart/form-data">
+              <b-form
+                method="post"
+                @submit.prevent="onSubmit"
+                enctype="multipart/form-data"
+              >
                 <div class="row">
                   <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="form-group">
@@ -55,9 +59,7 @@
                   </div>
                   <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="form-group">
-                      <label class="form-label"
-                        >Thông tin ngắn</label
-                      >
+                      <label class="form-label">Thông tin ngắn</label>
                       <textarea
                         class="form-control"
                         rows="2"
@@ -111,9 +113,7 @@
                   </div>
                   <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="form-group fallback w-100">
-                      <label class="form-label d-block"
-                        > Ảnh đại diện
-                      </label>
+                      <label class="form-label d-block"> Ảnh đại diện </label>
                       <input
                         type="file"
                         class="dropify"
@@ -123,7 +123,9 @@
                   </div>
                   <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="form-group fallback w-100">
-                      <label class="form-label d-block">Hình ảnh sản phẩm </label>
+                      <label class="form-label d-block"
+                        >Hình ảnh sản phẩm
+                      </label>
                       <input
                         type="file"
                         class="dropify"
@@ -179,7 +181,7 @@ export default {
   data() {
     return {
       form: {
-        _id: '',
+        _id: "",
         productName: "",
         productQty: 0,
         discountPrice: 0,
@@ -194,19 +196,19 @@ export default {
         productImgs: []
       },
       nameCategory: "",
-      options:{
-                url: 'https://elnic-api.herokuapp.com/api/product/update',
-                type: "POST",
-                processData: false, 
-                contentType: false 
-      },
+      options: {
+        url: "https://elnic-api.herokuapp.com/api/product/update",
+        type: "POST",
+        processData: false,
+        contentType: false
+      }
     };
   },
   mounted() {
     let id = this.$route.params.id;
     // getProduct(id);
     axios
-      .get("https://elnic-api.herokuapp.com/api/product/"+id)
+      .get("https://elnic-api.herokuapp.com/api/product/" + id)
       .catch(error => {
         // console.log(error);
         this.$swal({
@@ -258,21 +260,21 @@ export default {
       //      formData.append("productImgs", this.form.productImgs[i]);
       // }
       for (var pair of formData.entries()) {
-          console.log(pair[0]+ ', ' + pair[1]); 
+        console.log(pair[0] + ", " + pair[1]);
       }
-      $.ajax(Object.assign({}, this.options, {data: formData}))
-            .then( (res) => {
-                console.log(res);
-                this.loading= false;
-                this.$router.push({ name: "product"})
-                    Toast.fire({
-                    icon: 'success',
-                    title: 'Cập nhật sản phẩm thành công!!!'
-         	    });
-            })
-            .catch( (err) => {
-                console.log(err)
-            });
+      $.ajax(Object.assign({}, this.options, { data: formData }))
+        .then(res => {
+          console.log(res);
+          this.loading = false;
+          this.$router.push({ name: "product" });
+          Toast.fire({
+            icon: "success",
+            title: "Cập nhật sản phẩm thành công!!!"
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
 
     onCancel() {

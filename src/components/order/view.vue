@@ -15,41 +15,47 @@
                 />
               </div>
               <div class="card-body custom-tab-1">
-                <div> 
-                   <router-link class="btn btn-primary" to="/order">Danh sách đơn hàng</router-link>
+                <div>
+                  <router-link class="btn btn-primary" to="/order"
+                    >Danh sách đơn hàng</router-link
+                  >
                 </div>
                 <br />
                 <div class="tab-content">
                   <div id="my-posts" class="tab-pane fade active show">
                     <div class="table-responsive">
-                        <div>
-                        <table class="table header-border table-hover verticle-middle  table-bordered">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th><strong>STT</strong></th>
-                                                                            <th>Hình ảnh</th>
-                                                                            <th><strong>Tên sản phẩm</strong></th>
-                                                                            <th><strong>Số lượng</strong></th>
-                                                                            <th><strong>Giá tiền</strong></th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr v-for="(td,index) in products" :key="td._id">
-                                                                              <td>{{ index +1 }}</td>
-                                                                              <td>
-                                                                                  <img :src="td.productThambnail" />
-                                                                              </td>
-                                                                              <td>{{ td.productName }}</td>
-                                                                              <td>
-                                                                                  <span v-for="pq in listProId" :key="pq._id">
-                                                                                        <span v-if="pq._id === td._id">{{pq.userQuantity}}</span>
-                                                                                  </span>
-                                                                              </td>
-                                                                              <td>{{ td.sellingPrice }}</td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
+                      <div>
+                        <table
+                          class="table header-border table-hover verticle-middle  table-bordered"
+                        >
+                          <thead>
+                            <tr>
+                              <th><strong>STT</strong></th>
+                              <th>Hình ảnh</th>
+                              <th><strong>Tên sản phẩm</strong></th>
+                              <th><strong>Số lượng</strong></th>
+                              <th><strong>Giá tiền</strong></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr v-for="(td, index) in products" :key="td._id">
+                              <td>{{ index + 1 }}</td>
+                              <td>
+                                <img :src="td.productThambnail" />
+                              </td>
+                              <td>{{ td.productName }}</td>
+                              <td>
+                                <span v-for="pq in listProId" :key="pq._id">
+                                  <span v-if="pq._id === td._id">{{
+                                    pq.userQuantity
+                                  }}</span>
+                                </span>
+                              </td>
+                              <td>{{ td.sellingPrice }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -89,7 +95,7 @@ export default {
     getOrder() {
       let id = this.$route.params.id;
       axios
-        .get("https://elnic-api.herokuapp.com/api/orders/"+id)
+        .get("https://elnic-api.herokuapp.com/api/orders/" + id)
         .then(({ data }) => {
           this.orders = data;
           this.listProId = this.orders.productList;
@@ -99,14 +105,17 @@ export default {
         .catch();
       console.log(this.products);
     },
-    getProduct(){
-      for (let i=0;i<this.listProId.length;i++){
-      axios
-        .get("https://elnic-api.herokuapp.com/api/product/"+this.listProId[i]._id)
-        .then(({ data }) => {
-          this.products.push(data[0]);
-        })
-        .catch();
+    getProduct() {
+      for (let i = 0; i < this.listProId.length; i++) {
+        axios
+          .get(
+            "https://elnic-api.herokuapp.com/api/product/" +
+              this.listProId[i]._id
+          )
+          .then(({ data }) => {
+            this.products.push(data[0]);
+          })
+          .catch();
       }
     },
     deleteCategory(id) {

@@ -6,7 +6,9 @@
         <div class="row page-titles mx-0">
           <div class="col-sm-6 p-md-0">
             <div class="welcome-text">
-                <router-link to="/user"><h4>Danh sách người dùng</h4></router-link>
+              <router-link to="/user"
+                ><h4>Danh sách người dùng</h4></router-link
+              >
             </div>
           </div>
         </div>
@@ -30,7 +32,7 @@
                         />
                       </div>
                     </div>
-                     <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
                       <div class="form-group">
                         <label class="form-label">Email</label>
                         <input
@@ -98,8 +100,7 @@ export default {
     }
     let id = this.$route.params.id;
     axios
-      .get("https://elnic.herokuapp.com/api/user/getByIdOrUsername?id="+id,
-      )
+      .get("https://elnic.herokuapp.com/api/user/getByIdOrUsername?id=" + id)
       .then(({ data }) => {
         this.form = data;
         console.log(this.form);
@@ -121,12 +122,12 @@ export default {
   data() {
     return {
       form: {
-				fullname: '',
-        fullName: '',
-				username: '',
-				email: '',
-				password: '',
-			},
+        fullname: "",
+        fullName: "",
+        username: "",
+        email: "",
+        password: ""
+      },
       errors: {},
       loading: false
     };

@@ -6,7 +6,9 @@
         <div class="row page-titles mx-0">
           <div class="col-sm-6 p-md-0">
             <div class="welcome-text">
-                <router-link to="/category"><h4>Danh sách doanh mục</h4></router-link>
+              <router-link to="/category"
+                ><h4>Danh sách doanh mục</h4></router-link
+              >
             </div>
           </div>
         </div>

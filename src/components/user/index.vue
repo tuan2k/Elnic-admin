@@ -17,11 +17,13 @@
               <div class="card-body custom-tab-1">
                 <div class="tab-content">
                   <div id="my-posts" class="tab-pane fade active show">
-                    <span
-                      ><router-link to="create-user" class="btn btn-primary btn-sm form-group"
-                        >Thêm mới</router-link
-                      ></span
-                    >
+                    <!-- <span>
+                      <router-link
+                        to="create-user"
+                        class="btn btn-primary btn-sm form-group"
+                        >Thêm mới
+                      </router-link>
+                    </span> -->
                     <div class="table-responsive">
                       <b-table
                         class="table table-responsive-md"
@@ -31,6 +33,23 @@
                         :current-page="currentPage"
                         small
                       >
+<<<<<<< HEAD
+                        <!-- <template #cell(actions)="row">
+                          <router-link
+                            :to="{
+                              name: 'edit-user',
+                              params: { id: row.item._id }
+                            }"
+                            class="btn btn-sm btn-primary"
+                            >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+                              <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/>
+                            </svg>
+                            <font color="white">Sửa</font>
+                          </router-link>
+                        </template> -->
+=======
+>>>>>>> cc6aa63d05dd7d1aa033bbfb1b4c595123d5c539
                       </b-table>
                     </div>
                   </div>
@@ -63,13 +82,13 @@ export default {
       this.$router.push({ name: "login" });
     }
     axios
-        .get("https://elnic.herokuapp.com/api/user")
-        .catch(() => Notification.error())
-        .then(({ data }) => {
-          this.users = data;
-          this.rows = this.users.length;
-          console.log(this.users);
-        });
+      .get("https://elnic.herokuapp.com/api/user")
+      .catch(() => Notification.error())
+      .then(({ data }) => {
+        this.users = data;
+        this.rows = this.users.length;
+        console.log(this.users);
+      });
   },
   computed: {
     filtersearch() {
@@ -86,7 +105,7 @@ export default {
         return checkRole;
       });
       return dataUser;
-    },
+    }
   },
   mounted() {
     this.$store.dispatch("getUsers");
@@ -99,10 +118,18 @@ export default {
       perPage: 10,
       currentPage: 1,
       fields: [
+<<<<<<< HEAD
+        { key: "username", label: "Tên đăng nhập" },
+        { key: "email", label: "Email" },
+        { key: "roles[0].name", label: "Vai trò" },
+        { key: "phone", label: "Số điện thoại" }
+        // { key: "actions", label: "Chức năng" }
+=======
         { key: "username", label: "Tên đăng nhập"},
         { key: "email", label: "Email"},
         { key: "roles[0].name", label: "Vai trò"},
         { key: "phone",label: "Số điện thoại"},
+>>>>>>> cc6aa63d05dd7d1aa033bbfb1b4c595123d5c539
       ]
     };
   },

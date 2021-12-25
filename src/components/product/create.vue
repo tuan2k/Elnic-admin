@@ -55,9 +55,7 @@
                   </div>
                   <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="form-group">
-                      <label class="form-label"
-                        >Mô tả ngắn</label
-                      >
+                      <label class="form-label">Mô tả ngắn</label>
                       <textarea
                         class="form-control"
                         rows="2"
@@ -143,9 +141,7 @@
                   </div> -->
                   <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="form-group fallback w-100">
-                      <label class="form-label d-block"
-                        >Ảnh đại diện
-                      </label>
+                      <label class="form-label d-block">Ảnh đại diện </label>
                       <input
                         type="file"
                         class="dropify"
