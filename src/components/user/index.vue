@@ -107,9 +107,9 @@ export default {
   },
   data() {
     return {
-      users: [],
+      // users: [],
       searchTerm: "",
-      rows: 0,
+      //   rows: 0,
       perPage: 10,
       currentPage: 1,
       fields: [
