@@ -33,6 +33,7 @@
                         :current-page="currentPage"
                         small
                       >
+<<<<<<< HEAD
                         <!-- <template #cell(actions)="row">
                           <router-link
                             :to="{
@@ -47,6 +48,8 @@
                             <font color="white">Sửa</font>
                           </router-link>
                         </template> -->
+=======
+>>>>>>> cc6aa63d05dd7d1aa033bbfb1b4c595123d5c539
                       </b-table>
                     </div>
                   </div>
@@ -115,11 +118,18 @@ export default {
       perPage: 10,
       currentPage: 1,
       fields: [
+<<<<<<< HEAD
         { key: "username", label: "Tên đăng nhập" },
         { key: "email", label: "Email" },
         { key: "roles[0].name", label: "Vai trò" },
         { key: "phone", label: "Số điện thoại" }
         // { key: "actions", label: "Chức năng" }
+=======
+        { key: "username", label: "Tên đăng nhập"},
+        { key: "email", label: "Email"},
+        { key: "roles[0].name", label: "Vai trò"},
+        { key: "phone",label: "Số điện thoại"},
+>>>>>>> cc6aa63d05dd7d1aa033bbfb1b4c595123d5c539
       ]
     };
   },

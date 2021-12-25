@@ -27,6 +27,7 @@
                         <label class="form-label">Tên doanh mục</label>
                         <input
                           type="text"
+                          required
                           v-model="form.categoryName"
                           class="form-control"
                         />
@@ -38,6 +39,7 @@
                         <input
                           type="text"
                           class="form-control"
+                          required
                           v-model="form.categoryIcon"
                         />
                       </div>
@@ -138,4 +140,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.content-body {
+  height: 900px;
+}
+</style>
