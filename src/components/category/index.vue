@@ -162,6 +162,9 @@ export default {
 </script>
 
 <style scoped>
+.content-body {
+  height: 900px;
+}
 /* .heo {
   margin-top: 20px;
   margin-left: 20px;

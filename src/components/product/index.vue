@@ -196,6 +196,9 @@ export default {
 </script>
 
 <style scoped>
+.content-body {
+  height: 900px;
+}
 .image_heo {
   width: 100px;
   height: 100px;
