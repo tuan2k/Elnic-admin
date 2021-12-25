@@ -40,7 +40,6 @@ export default {
         .get("https://elnic-api.herokuapp.com/api/product")
         .catch(() => Notification.error())
         .then(({ data }) => {
-          this.state.products = data;
           this.products = data;
         });
     console.log(this.products);
