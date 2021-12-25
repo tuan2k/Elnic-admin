@@ -17,11 +17,13 @@
               <div class="card-body custom-tab-1">
                 <div class="tab-content">
                   <div id="my-posts" class="tab-pane fade active show">
-                    <span
-                      ><router-link to="create-user" class="btn btn-primary btn-sm form-group"
-                        >Thêm mới</router-link
-                      ></span
-                    >
+                    <!-- <span>
+                      <router-link
+                        to="create-user"
+                        class="btn btn-primary btn-sm form-group"
+                        >Thêm mới
+                      </router-link>
+                    </span> -->
                     <div class="table-responsive">
                       <b-table
                         class="table table-responsive-md"
@@ -31,7 +33,7 @@
                         :current-page="currentPage"
                         small
                       >
-                        <template #cell(actions)="row">
+                        <!-- <template #cell(actions)="row">
                           <router-link
                             :to="{
                               name: 'edit-user',
@@ -44,7 +46,7 @@
                             </svg>
                             <font color="white">Sửa</font>
                           </router-link>
-                        </template>
+                        </template> -->
                       </b-table>
                     </div>
                   </div>
@@ -77,13 +79,13 @@ export default {
       this.$router.push({ name: "login" });
     }
     axios
-        .get("https://elnic.herokuapp.com/api/user")
-        .catch(() => Notification.error())
-        .then(({ data }) => {
-          this.users = data;
-          this.rows = this.users.length;
-          console.log(this.users);
-        });
+      .get("https://elnic.herokuapp.com/api/user")
+      .catch(() => Notification.error())
+      .then(({ data }) => {
+        this.users = data;
+        this.rows = this.users.length;
+        console.log(this.users);
+      });
   },
   computed: {
     filtersearch() {
@@ -100,7 +102,7 @@ export default {
         return checkRole;
       });
       return dataUser;
-    },
+    }
   },
   mounted() {
     this.$store.dispatch("getUsers");
@@ -113,11 +115,11 @@ export default {
       perPage: 10,
       currentPage: 1,
       fields: [
-        { key: "username", label: "Tên đăng nhập"},
-        { key: "email", label: "Email"},
-        { key: "roles[0].name", label: "Vai trò"},
-        { key: "phone",label: "Số điện thoại"},
-        { key: "actions", label: "Chức năng" }
+        { key: "username", label: "Tên đăng nhập" },
+        { key: "email", label: "Email" },
+        { key: "roles[0].name", label: "Vai trò" },
+        { key: "phone", label: "Số điện thoại" }
+        // { key: "actions", label: "Chức năng" }
       ]
     };
   },
